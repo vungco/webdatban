@@ -49,4 +49,8 @@ class User extends Authenticatable
     public function Feedbacks(){
         return $this->hasMany(Feedback::class);
     }
+
+    public function customer(){
+        return $this->belongsTo(Customer::class);
+    }
 }
