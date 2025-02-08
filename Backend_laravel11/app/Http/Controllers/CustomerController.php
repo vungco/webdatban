@@ -20,7 +20,12 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $customer = Customer::create($request->all());
+        
+        return response()->json([
+            "message" => "đã tạo khách hàng thành công",
+            "data" => $customer,
+        ]);
     }
 
     /**
@@ -36,7 +41,12 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        //
+        $customer->update($request->all());
+
+        return response()->json([
+            "message" => "đã sửa khách hàng thành công",
+            "data" => $customer,
+        ]); 
     }
 
     /**
@@ -44,6 +54,10 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+
+        return response()->json([
+            "message" => "đã xóa khách hàng thành công"
+        ]); 
     }
 }

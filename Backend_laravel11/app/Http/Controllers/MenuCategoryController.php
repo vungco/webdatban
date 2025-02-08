@@ -20,7 +20,7 @@ class MenuCategoryController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -28,7 +28,12 @@ class MenuCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $menuCategory = MenuCategory::create($request->all());
+        
+        return response()->json([
+            "message" => "đã tạo danh mục thành công",
+            "data" => $menuCategory,
+        ]);
     }
 
     /**
@@ -52,7 +57,12 @@ class MenuCategoryController extends Controller
      */
     public function update(Request $request, MenuCategory $menuCategory)
     {
-        //
+        $menuCategory->update($request->all());
+
+        return response()->json([
+            "message" => "đã sửa danh mục thành công",
+            "data" => $menuCategory,
+        ]);
     }
 
     /**
@@ -60,6 +70,10 @@ class MenuCategoryController extends Controller
      */
     public function destroy(MenuCategory $menuCategory)
     {
-        //
+        $menuCategory->delete();
+
+        return response()->json([
+            "message" => "đã xóa danh mục thành công"
+        ]);
     }
 }

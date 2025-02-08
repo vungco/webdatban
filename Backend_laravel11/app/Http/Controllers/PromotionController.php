@@ -28,7 +28,12 @@ class PromotionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $promotion = Promotion::create($request->all());
+        
+        return response()->json([
+            "message" => "đã tạo khuyến mãi thành công",
+            "data" => $promotion,
+        ]);
     }
 
     /**
@@ -52,7 +57,12 @@ class PromotionController extends Controller
      */
     public function update(Request $request, Promotion $promotion)
     {
-        //
+        $promotion->update($request->all());
+
+        return response()->json([
+            "message" => "đã sửa khuyến mãi thành công",
+            "data" => $promotion,
+        ]);
     }
 
     /**
@@ -60,6 +70,10 @@ class PromotionController extends Controller
      */
     public function destroy(Promotion $promotion)
     {
-        //
+        $promotion->delete();
+
+        return response()->json([
+            "message" => "đã xóa khuyến mãi thành công"
+        ]);
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,19 +27,27 @@ class OrderController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $order = Order::create($request->all());
-        
-        return response()->json([
-            "message" => "đã tạo đơn hàng thành công",
-            "data" => $order,
-        ]);
+{
+    $data = $request->all();
+    
+    // Mã hóa password
+    if (isset($data['password'])) {
+        $data['password'] = bcrypt($data['password']);
     }
+
+    $user = User::create($data);
+    
+    return response()->json([
+        "message" => "đã tạo tài khoản thành công",
+        "data" => $user,
+    ]);
+}
+
 
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(string $id)
     {
         //
     }
@@ -47,7 +55,7 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Order $order)
+    public function edit(string $id)
     {
         //
     }
@@ -55,25 +63,25 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, User $user)
     {
-        $order->update($request->all());
+        $user->update($request->all());
 
         return response()->json([
-            "message" => "đã sửa đơn hàng thành công",
-            "data" => $order,
+            "message" => "đã sửa tài khoản thành công",
+            "data" => $user,
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function destroy(User $user)
     {
-        $order->delete();
+        $user->delete();
 
         return response()->json([
-            "message" => "đã xóa đơn hàng thành công"
+            "message" => "đã xóa tài khoản thành công"
         ]);
     }
 }

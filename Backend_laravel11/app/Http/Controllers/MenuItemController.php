@@ -28,7 +28,12 @@ class MenuItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $menuItem = MenuItem::create($request->all());
+        
+        return response()->json([
+            "message" => "đã tạo sản phẩm thành công",
+            "data" => $menuItem,
+        ]);
     }
 
     /**
@@ -52,7 +57,12 @@ class MenuItemController extends Controller
      */
     public function update(Request $request, MenuItem $menuItem)
     {
-        //
+        $menuItem->update($request->all());
+
+        return response()->json([
+            "message" => "đã sửa sản phẩm thành công",
+            "data" => $menuItem,
+        ]);
     }
 
     /**
@@ -60,6 +70,10 @@ class MenuItemController extends Controller
      */
     public function destroy(MenuItem $menuItem)
     {
-        //
+        $menuItem->delete();
+
+        return response()->json([
+            "message" => "đã xóa sản phẩm thành công"
+        ]);
     }
 }

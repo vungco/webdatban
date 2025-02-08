@@ -12,7 +12,9 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            "message" => "show feedbacks"
+        ]);
     }
 
     /**
@@ -28,7 +30,12 @@ class FeedbackController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $feeback = Feedback::create($request->all());
+        
+        return response()->json([
+            "message" => "đã tạo phản hồi thành công",
+            "data" => $feeback,
+        ]);
     }
 
     /**
@@ -52,7 +59,12 @@ class FeedbackController extends Controller
      */
     public function update(Request $request, Feedback $feedback)
     {
-        //
+        $feedback->update($request->all());
+
+        return response()->json([
+            "message" => "đã sửa phản hồi thành công",
+            "data" => $feedback,
+        ]);
     }
 
     /**
@@ -60,6 +72,10 @@ class FeedbackController extends Controller
      */
     public function destroy(Feedback $feedback)
     {
-        //
+        $feedback->delete();
+
+        return response()->json([
+            "message" => "đã xóa phản hồi thành công"
+        ]);
     }
 }

@@ -28,7 +28,12 @@ class TableBookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $tableBooking = TableBooking::create($request->all());
+        
+        return response()->json([
+            "message" => "đã tạo lượt đặt thành công",
+            "data" => $tableBooking,
+        ]);
     }
 
     /**
@@ -52,7 +57,12 @@ class TableBookingController extends Controller
      */
     public function update(Request $request, TableBooking $tableBooking)
     {
-        //
+        $tableBooking->update($request->all());
+
+        return response()->json([
+            "message" => "đã sửa lượt đặt thành công",
+            "data" => $tableBooking,
+        ]);
     }
 
     /**
@@ -60,6 +70,10 @@ class TableBookingController extends Controller
      */
     public function destroy(TableBooking $tableBooking)
     {
-        //
+        $tableBooking->delete();
+
+        return response()->json([
+            "message" => "đã xóa lượt đặt thành công"
+        ]);
     }
 }

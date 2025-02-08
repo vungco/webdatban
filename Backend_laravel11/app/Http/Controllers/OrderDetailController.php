@@ -28,7 +28,12 @@ class OrderDetailController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $orderDetail = OrderDetail::create($request->all());
+        
+        return response()->json([
+            "message" => "đã tạo đơn hàng chi tiết thành công",
+            "data" => $orderDetail,
+        ]);
     }
 
     /**
@@ -52,7 +57,12 @@ class OrderDetailController extends Controller
      */
     public function update(Request $request, OrderDetail $orderDetail)
     {
-        //
+        $orderDetail->update($request->all());
+
+        return response()->json([
+            "message" => "đã sửa đơn hàng chi tiết thành công",
+            "data" => $orderDetail,
+        ]);
     }
 
     /**
@@ -60,6 +70,10 @@ class OrderDetailController extends Controller
      */
     public function destroy(OrderDetail $orderDetail)
     {
-        //
+        $orderDetail->delete();
+
+        return response()->json([
+            "message" => "đã xóa đơn hàng chi tiết thành công"
+        ]);
     }
 }
