@@ -61,8 +61,8 @@ function Header() {
                                             <button onClick={handleLogin}>Đăng nhập</button>
                                             <div className='d-flex flex-column' style={{ color: '#bd8133' }}>
                                                 <p className='m-0'>Xin chào Lâm!</p>
-                                                <Link to=''>Đơn hàng</Link>
-                                                <Link to=''>Thông tin cá nhân</Link>
+                                                <Link to='/Order'>Đơn hàng</Link>
+                                                <Link to='/PersonalIn4'>Thông tin cá nhân</Link>
                                                 <Link to=''>Đăng xuất</Link>
                                             </div>
                                         </div>)}
