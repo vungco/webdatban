@@ -7,9 +7,13 @@ import Pay from "../pages/User/Pay";
 import Thanks from "../pages/User/Thanks";
 import Bookings from "../pages/User/Bookings";
 import Bill from "../pages/User/Bill";
+import Order from "../pages/User/Order";
+import OrderDetails from "../pages/User/OrderDetails";
+import PersonalIn4 from "../pages/User/PersonalIn4";
 import HomeAd from "../pages/Admin/Home";
 import Account from "../pages/Admin/Account";
 import Table from "../pages/User/table";
+
 
 
 const publicRoutes = [
@@ -36,6 +40,15 @@ const publicRoutes = [
     },
     {
         path: '/Bill', component: Bill
+    },
+    {
+        path: '/Order', component: Order
+    },
+    {
+        path: '/PersonalIn4', component: PersonalIn4
+    },
+    {
+        path: '/OrderDetails', component: OrderDetails
     },
     {
         path: '/Admin/Home', component: HomeAd, layout: Admin
