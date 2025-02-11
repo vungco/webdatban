@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import Title from '../../../components/shared/Title'
 import MenuSelection from '../../../components/shared/MenuSelection'
+import BookingTable from '../../../components/shared/BookingTable'
 
 function Bookings() {
     const [showMenuModal, setShowMenuModal] = useState(false);
+    const [showBookingTable, setShowBookingTable] = useState(false);
     const handleBooking = () => {
-        const userConfirmation = window.confirm("Bạn có muốn đặt món luôn không?");
+        const userConfirmation = window.confirm("Bạn có muốn đặt bàn luôn không?");
         if (userConfirmation) {
-            setShowMenuModal(true); // Hiển thị khung chọn món
+            setShowBookingTable(true); // Hiển thị khung chọn bàn
         }
     };
 
     const handleCloseMenu = () => {
-        setShowMenuModal(false); // Đóng khung chọn món
+        setShowBookingTable(false); // Đóng khung chọn bàn
     };
     return (
         <div className='container-fluid w-100 pb-5' style={{ background: '#10302c', padding: '80px 0 0 0' }}>
@@ -54,7 +56,7 @@ function Bookings() {
                             <button type="submit" onClick={handleBooking} style={{ width: '150px', height: '45px', borderRadius: '5px', border: 'none', background: '#d69c52', color: '#fff' }}>Đặt bàn ngay</button>
                         </div>
                     </form>
-                    <MenuSelection isVisible={showMenuModal} onClose={handleCloseMenu} />
+                    <BookingTable isVisible={showBookingTable} onClose={handleCloseMenu} />
 
                 </div>
             </div>

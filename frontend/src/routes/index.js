@@ -9,10 +9,15 @@ import Bookings from "../pages/User/Bookings";
 import Bill from "../pages/User/Bill";
 import HomeAd from "../pages/Admin/Home";
 import Account from "../pages/Admin/Account";
+import Table from "../pages/User/table";
+
 
 const publicRoutes = [
     {
         path: '/', component: Home
+    },
+    {
+        path: '/table', component: Table
     },
     {
         path: '/ProductDetails', component: ProductDetails

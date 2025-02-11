@@ -22,12 +22,22 @@ use Laravel\Sanctum\Sanctum;
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('feedbacks',FeedbackController::class);
     Route::apiResource('customers',CustomerController::class);
-    Route::apiResource('promotions',PromotionController::class);
-    Route::apiResource('table_bookings',TableBookingController::class);
-    Route::apiResource('tables',TableController::class);
-    Route::apiResource('orders',OrderController::class);
-    Route::apiResource('menu_categorys',MenuCategoryController::class);
-    Route::apiResource('menu_items',MenuItemController::class);
+    Route::apiResource('promotions',PromotionController::class)->only('index');
+    Route::apiResource('table_bookings',TableBookingController::class)->only('store');
+    Route::apiResource('tables',TableController::class)->only('index');
+    Route::apiResource('orders',OrderController::class)->only('index');
+    Route::apiResource('menu_categorys',MenuCategoryController::class)->only('index');
+    Route::apiResource('menu_items',MenuItemController::class)->only('index');
+
+    Route::middleware('check.admin')->group(function () {
+        Route::apiResource('promotions',PromotionController::class)->only('store','update','delete');
+        Route::apiResource('table_bookings',TableBookingController::class)->only('update','delete');
+        Route::apiResource('tables',TableController::class)->only('store','update','delete');
+        Route::apiResource('orders',OrderController::class)->only('store','update','delete');
+        Route::apiResource('menu_categorys',MenuCategoryController::class)->only('store','update','delete');
+        Route::apiResource('menu_items',MenuItemController::class)->only('store','update','delete');
+
+    });
 
     Route::get('logout',[LogoutController::class,'logout']);
 });
