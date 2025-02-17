@@ -12,7 +12,12 @@ class TableController extends Controller
      */
     public function index()
     {
-        //
+        $tables = Table::orderBy('Status', 'asc')->get();
+
+        return response()->json([
+            "message" => "Hiển thị toàn bộ bàn thành công",
+            "data" => $tables,
+        ]);
     }
 
     /**
@@ -31,7 +36,7 @@ class TableController extends Controller
         $table = Table::create($request->all());
         
         return response()->json([
-            "message" => "đã tạo khách hàng thành công",
+            "message" => "đã tạo bàn thành công",
             "data" => $table,
         ]);
     }
@@ -60,7 +65,7 @@ class TableController extends Controller
         $table->update($request->all());
 
         return response()->json([
-            "message" => "đã sửa khách hàng thành công",
+            "message" => "đã sửa bàn thành công",
             "data" => $table,
         ]);
     }
@@ -73,7 +78,7 @@ class TableController extends Controller
         $table->delete();
 
         return response()->json([
-            "message" => "đã xóa khách hàng thành công"
+            "message" => "đã xóa bàn thành công"
         ]);
     }
 }

@@ -1,7 +1,15 @@
 import React, { useState } from "react";
+import authUser from "../../../api/authUser";
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = ({ isVisible, onClose }) => {
     const [isRightPanelActive, setRightPanelActive] = useState(false);
+    const [email,setEmail] = useState(); 
+    const [password,setPassword] = useState(); 
+    const [name,setName] = useState(); 
+    const navigate = useNavigate();
+
 
     const handleSignUpClick = () => {
         setRightPanelActive(true);
@@ -10,11 +18,47 @@ const Login = ({ isVisible, onClose }) => {
     const handleSignInClick = () => {
         setRightPanelActive(false);
     };
-    if (!isVisible) {
-        return null;
+    // if (!isVisible) {
+    //     return null;
+    // }
+
+    function HandleLogin(e){
+        e.preventDefault();
+        const data = {
+            email,
+            password,
+        }
+        authUser.login(data)
+            .then(response=>{
+                localStorage.setItem('token',response.token);
+                navigate('/');
+            })
+            .catch(error=>{
+                console.error('Có lỗi khi đăng nhập '+error+'-'+error.response.data.message)
+            })
+    }
+
+    function HandleRegester(e){
+        e.preventDefault();
+        const data = {
+            name,
+            email,
+            password,
+        }
+        authUser.regester(data)
+            .then(response=>{
+                alert('chúc mừng bạn đã đăng ký thành công');
+                setRightPanelActive(false);
+                setName();
+                setEmail();
+                setPassword();
+            })
+            .catch(error=>{
+                console.error('Có lỗi khi đăng ký '+error+'-'+error.response.data.message)
+            })
     }
     return (
-        <div >
+        <div style={{height:'420px'}}>
             {/* Lớp phủ mờ */}
             <div
                 style={{
@@ -42,14 +86,14 @@ const Login = ({ isVisible, onClose }) => {
 
                             </div>
                             <span>or use your email for registration</span>
-                            <input type="text" placeholder="Name" />
-                            <input type="email" placeholder="Email" />
-                            <input type="password" placeholder="Password" />
-                            <button>Sign Up</button>
+                            <input type="text" placeholder="Name" onChange={(e)=>(setName(e.target.value))} />
+                            <input type="email" placeholder="Email" onChange={(e)=>(setEmail(e.target.value))} />
+                            <input type="password" placeholder="Password" onChange={(e)=>(setPassword(e.target.value))} />
+                            <button onClick={(e)=>{HandleRegester(e)}}>Sign Up</button>
                         </form>
                     </div>
                     <div className="form-container sign-in-container">
-                        <form action="#">
+                        <form action="">
                             <h1>Sign in</h1>
                             <div className="social-container">
                                 <a href="#" className="social"><img src="https://coachingskills.vn/wp-content/uploads/2024/07/facebook-logo-icon-facebook-icon-png-images-icons-and-png-backgrounds-1.png" alt /></a>
@@ -57,10 +101,10 @@ const Login = ({ isVisible, onClose }) => {
 
                             </div>
                             <span>or use your account</span>
-                            <input type="email" placeholder="Email" />
-                            <input type="password" placeholder="Password" />
+                            <input type="email" placeholder="Email" onChange={(e)=>(setEmail(e.target.value))}/>
+                            <input type="password" placeholder="Password" onChange={(e)=>(setPassword(e.target.value))}/>
                             <a href="#">Forgot your password?</a>
-                            <button>Sign In</button>
+                            <button onClick={(e)=>{HandleLogin(e)}}>Sign In</button>
                         </form>
                     </div>
                     <div className="overlay-container">

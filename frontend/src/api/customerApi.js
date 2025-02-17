@@ -10,6 +10,10 @@ const customerApi = {
     return axiosClient.get(`/customers/${id}`);
   },
 
+  getByIdUser(id) {
+    return axiosClient.get(`/user/get_customer`);
+  },
+
   create(data) {
     return axiosClient.post('/customers', data);
   },

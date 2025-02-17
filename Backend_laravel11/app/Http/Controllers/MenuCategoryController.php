@@ -12,7 +12,12 @@ class MenuCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $menuCategorys = MenuCategory::all();
+        
+        return response()->json([
+            "message" => "đã tạo danh mục thành công",
+            "data" => $menuCategorys,
+        ]);
     }
 
     /**

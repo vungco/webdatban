@@ -12,7 +12,12 @@ class MenuItemController extends Controller
      */
     public function index()
     {
-        //
+        $menuItems = MenuItem::all();
+        
+        return response()->json([
+            "message" => "đã tạo sản phẩm thành công",
+            "data" => $menuItems,
+        ]);
     }
 
     /**

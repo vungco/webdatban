@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const axiosClient = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,  // Sử dụng biến môi trường cho dễ quản lý
+  baseURL: `http://127.0.0.1:8000/api`,  // Sử dụng biến môi trường cho dễ quản lý
   headers: {
     'Content-Type': 'application/json',
   },

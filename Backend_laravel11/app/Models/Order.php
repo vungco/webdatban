@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    public $timestamps = false;
+
     protected $primaryKey = "OrderID";
 
     protected $fillable = [
         'BookingID',
         'CustomerID',
+        'PromotionID',
         'OrderDate',
         'TotalAmount',
     ];

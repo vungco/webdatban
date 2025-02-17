@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->increments('TableID');
-            $table->integer('TableNumber');
+            $table->string('TableNumber');
             $table->integer('Capacity');
             $table->string('Status');
         });

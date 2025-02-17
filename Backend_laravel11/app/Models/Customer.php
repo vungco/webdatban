@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
+    public $timestamps = false;
+
     protected $primaryKey = "CustomerID";
 
     protected $fillable = [
         'UserID',
-        'Fullname',
+        'FullName',
         'PhoneNumber',
         'Address',
     ];

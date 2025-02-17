@@ -12,7 +12,12 @@ class PromotionController extends Controller
      */
     public function index()
     {
-        //
+        $vouchers = Promotion::all(); // Lấy tất cả voucher
+
+        return response()->json([
+            "message" => "đã hiển thị mã giảm giá thành công",
+            "data" => $vouchers,
+        ]);
     }
 
     /**
@@ -76,4 +81,18 @@ class PromotionController extends Controller
             "message" => "đã xóa khuyến mãi thành công"
         ]);
     }
+
+    public function showValidVouchers()
+{
+    $currentDate = now(); // Lấy ngày hiện tại
+    $vouchers = Promotion::where('StartDate', '<=', $currentDate)
+                         ->where('EndDate', '>=', $currentDate)
+                         ->get();
+
+        return response()->json([
+           "message" => "đã sửa khuyến mãi thành công",
+           "data" => $vouchers,
+        ]);
+}
+
 }

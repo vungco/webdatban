@@ -60,4 +60,22 @@ class CustomerController extends Controller
             "message" => "đã xóa khách hàng thành công"
         ]); 
     }
+
+    public function getBy_iduser(Request $request)
+    {
+        $user_id = $request->user()->id;
+        $customer = Customer::where(['UserID'=>$user_id])->first();
+
+        if($customer){
+            return response()->json([
+                "message" => "đã lấy khách hàng thành công",
+                "data" => $customer,
+            ]); 
+        }else{
+            return response()->json([
+                "message" => "tài khoản này chưa có khách hàng",
+            ],404); 
+        }
+        
+    }
 }

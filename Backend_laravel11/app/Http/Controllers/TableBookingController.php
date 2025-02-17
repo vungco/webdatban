@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookingRequest;
 use App\Models\TableBooking;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,7 @@ class TableBookingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BookingRequest $request)
     {
         $tableBooking = TableBooking::create($request->all());
         

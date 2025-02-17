@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Promotion extends Model
 {
+    public $timestamps = false;
+
     protected $primaryKey = "PromotionID";
 
     protected $fillable = [

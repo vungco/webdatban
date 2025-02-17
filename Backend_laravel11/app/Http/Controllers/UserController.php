@@ -47,9 +47,12 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        //
+        return response()->json([
+            "message" => "Hiển thị tài khoản thành công",
+            'data' => $user,
+        ]);
     }
 
     /**
@@ -82,6 +85,16 @@ class UserController extends Controller
 
         return response()->json([
             "message" => "đã xóa tài khoản thành công"
+        ]);
+    }
+
+    public function getUserId(Request $request)
+    {
+        $user_id = $request->user()->id;
+
+        return response()->json([
+            "message" => "đã lấy id tài khoản thành công",
+            "data" => $user_id,
         ]);
     }
 }

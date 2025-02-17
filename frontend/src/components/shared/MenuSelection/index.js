@@ -1,54 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import menu_itemApi from '../../../api/menu_itemApi';
+import menu_categoryApi from '../../../api/menu_categoryApi';
 
 const MenuSelection = ({ isVisible, onClose }) => {
     const navigate = useNavigate();
 
-    const [activeCategory, setActiveCategory] = useState('khaiVi');
+    const [activeCategory, setActiveCategory] = useState(null);
+    const [Menu_items, setMenu_items] = useState(null);
+    const [Menu_itemsOfactiveCategory, setMenu_itemsOfactiveCategory] = useState(null);
+    const [Menu_categorys, setMenu_categorys] = useState(null);
+    const [Select_menuItems, setSelect_menuItems] = useState([]);
+    const [TotalPrice, setTotalPrice] = useState(0);
+
+    const formatNumber = (number) => {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+    
+    function HandleAddSelectMenuItems(menu_item) {
+        setSelect_menuItems((prevTables) => {
+          // Kiểm tra xem có table nào có TableID giống với table.TableID không
+          const isAlreadySelected = prevTables.some(t => t.MenuItemID === menu_item.MenuItemID);
+      
+          if (isAlreadySelected) {
+            // Nếu đã có trong mảng, xóa bỏ table
+            return prevTables.filter((t) => t.MenuItemID !== menu_item.MenuItemID);
+          } else {
+            // Nếu chưa có, thêm vào mảng
+            return [...prevTables, menu_item];
+          }
+        });
+      }
+
+    const handleCategoryClick = (CategoryID) => {
+        setActiveCategory(CategoryID);
+    };
+
+    useEffect(()=>{
+        if(Menu_items){
+            const filteredItems = Menu_items.filter((item) => item.CategoryID === activeCategory);
+            setMenu_itemsOfactiveCategory(filteredItems);
+        }
+    },[activeCategory]);
+
+    useEffect(()=>{
+        menu_itemApi.getAll()
+            .then(response=>{
+                setMenu_items(response.data)
+            })
+            .catch(console.error('co loi trong qua trinh lay menu_items')
+            )
+
+        menu_categoryApi.getAll()
+            .then(response=>{
+                setMenu_categorys(response.data)
+                setActiveCategory(response.data[0].CategoryID)
+            })
+            .catch(console.error('co loi trong qua trinh lay menu_categorys')
+            )
+    },[]);
+
+    const handleToBill = () => {
+        sessionStorage.setItem('menu_items',JSON.stringify(Select_menuItems));
+        sessionStorage.setItem('total_price',JSON.stringify(TotalPrice));
+        navigate('/Bill');
+    };
+
+    const calculateTotalPrice = (menu_items) => {
+        return menu_items.reduce((total, item) => total + (item.Price || 0), 0);
+    };
+
+    useEffect(()=>{
+        if(Select_menuItems){
+            const sumPrice = Select_menuItems.reduce((total, item) => total + (item.Price || 0), 0);
+            setTotalPrice(sumPrice);
+        }
+    },[Select_menuItems]);
+
     if (!isVisible) {
         return null;
     }
-
-    const handleCategoryClick = (category) => {
-        setActiveCategory(category);
-    };
-    const handleToBill = () => {
-        navigate('/Bill');
-    };
-    const products = {
-        "khaiVi": [
-            { id: 1, name: "Gỏi Cuốn", price: "25,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-            { id: 2, name: "Súp Cua", price: "30,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-            { id: 20, name: "Gỏi Cuốn", price: "25,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-            { id: 21, name: "Súp Cua", price: "30,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-            { id: 22, name: "Gỏi Cuốn", price: "25,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-            { id: 23, name: "Súp Cua", price: "30,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-        ],
-        "monChinh": [
-            { id: 3, name: "Cơm Tấm", price: "50,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-            { id: 4, name: "Bún Bò Huế", price: "55,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-        ],
-        "Canh": [
-            { id: 5, name: "Canh Chua Cá", price: "40,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-            { id: 6, name: "Canh Rau Dền", price: "20,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-        ],
-        "Com": [
-            { id: 7, name: "Cơm Chiên Dương Châu", price: "45,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-            { id: 8, name: "Cơm Rang Hải Sản", price: "60,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-        ],
-        "Trangmieng": [
-            { id: 9, name: "Chè Thái", price: "25,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-            { id: 10, name: "Kem Dừa", price: "30,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-        ],
-        "Douong": [
-            { id: 11, name: "Trà Đào", price: "20,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-            { id: 12, name: "Nước Ép Cam", price: "25,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-        ],
-        "combo": [
-            { id: 11, name: "Trà Đào", price: "20,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-            { id: 12, name: "Nước Ép Cam", price: "25,000đ", image: "https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253" },
-        ],
-    };
 
     return (
 
@@ -76,61 +107,69 @@ const MenuSelection = ({ isVisible, onClose }) => {
                         <div className='col-md-8' style={{ border: '1px solid rgb(195, 194, 194)' }}>
                             <div className='p-1' style={{ height: '400px', overflowY: 'auto' }}>
                                 <ul className='d-flex p-0'>
-                                    <li
-                                        className={` ${activeCategory === "khaiVi" ? "menu_active" : ""}`}
-                                        onClick={() => handleCategoryClick("khaiVi")}>Khai vị</li>
-                                    <li
-                                        className={` ${activeCategory === "monChinh" ? "menu_active" : ""}`}
-                                        onClick={() => handleCategoryClick("monChinh")}>Món chính</li>
-                                    <li
-                                        className={` ${activeCategory === "Canh" ? "menu_active" : ""}`}
-                                        onClick={() => handleCategoryClick("Canh")}>Canh - Súp</li>
-                                    <li
-                                        className={` ${activeCategory === "Com" ? "menu_active" : ""}`}
-                                        onClick={() => handleCategoryClick("Com")}>Cơm - Mì</li>
-                                    <li
-                                        className={` ${activeCategory === "Trangmieng" ? "menu_active" : ""}`}
-                                        onClick={() => handleCategoryClick("Trangmieng")}>Tráng miệng</li>
-                                    <li
-                                        className={` ${activeCategory === "Douong" ? "menu_active" : ""}`}
-                                        onClick={() => handleCategoryClick("Douong")}>Đồ uống</li>
-                                    <li
-                                        className={` ${activeCategory === "combo" ? "menu_active" : ""}`}
-                                        onClick={() => handleCategoryClick("combo")}>Combo</li>
+                                    {Menu_categorys?.map((menu_category)=>(
+                                        <li
+                                        className={` ${activeCategory === menu_category.CategoryID ? "menu_active" : ""}`}
+                                        onClick={() => handleCategoryClick(menu_category.CategoryID)}
+                                        >
+                                            {menu_category.CategoryName}
+                                    </li>
+                                    ))}
+                                    
                                 </ul>
 
                                 <div className='row' style={{ marginTop: '80px' }}>
-                                    {products[activeCategory].map((product) => (
-                                        <div className="col-md-5 text-center pro-item p-1 position-relative" key={product.id} style={{ background: '#908f8f', marginBottom: '24px', height: '290px' }}>
+                                    {Menu_itemsOfactiveCategory?.map((product) => (
+                                        <div className="col-md-5 text-center pro-item p-1 position-relative" key={product.MenuItemID} style={{ background: '#908f8f', marginBottom: '24px', height: '290px' }}>
                                             <div className='pro-item_child' style={{ width: '100%', height: '100%', position: 'absolute', background: '#fff', top: '1%', padding: '8px' }}>
                                                 <img
-                                                    src={product.image}
-                                                    alt={product.name}
+                                                    src={product.ImageURL}
+                                                    alt={product.Name}
                                                     className="w-100 mb-2"
                                                 />
-                                                <h5>{product.name}</h5>
-                                                <p className="text-danger">{product.price}</p>
+                                                <h5>{product.Name}</h5>
+                                                <p className="text-danger">{formatNumber(product.Price)}</p>
                                             </div>
-                                            <button style={{ position: 'absolute', bottom: '-10%', left: '25%', border: 'none', borderRadius: '5px', background: '#bd8133', color: '#fff', padding: '5px' }}>Chọn món</button>
+                                            {product.Status ?
+                                            <button 
+                                            style={{ position: 'absolute', bottom: '-10%', left: '25%', border: 'none', 
+                                            borderRadius: '5px', background: '#bd8133', color: '#fff', padding: '5px' }}
+                                            onClick={()=>HandleAddSelectMenuItems(product)}
+                                            >
+                                                {Select_menuItems.some(t => t.MenuItemID === product.MenuItemID) ? 'Bỏ chọn' : 'Chọn món'}
+                                            </button>
+                                            :''
+                                            }
                                         </div>
                                     ))}
                                 </div>
                             </div>
                         </div>
                         <div className='col-md-4 '>
-                            <div className='p-1' style={{ border: '1px solid rgb(195, 194, 194)', background: '#fff', height: '400px', overflowY: 'auto' }}>
-                                <h5>Các món đã chọn</h5>
-                                <div className='d-flex align-items-center justify-content-between mt-3 pb-3' style={{ borderBottom: '1px solid #fff' }}>
-                                    <div className='d-flex align-items-center position-relative mt-2'>
-                                        <img style={{ width: '50px', height: '50px', borderRadius: '5px' }} src='https://bizweb.dktcdn.net/thumb/thumb/100/469/097/products/untitled1bb4fdbb3bd7845448a799-a1c5a559-3505-435f-9278-d7ba29e9c529.jpg?v=1667882632337' />
-                                        <p style={{ marginLeft: '4px', fontSize: '12px' }}>Salad rau mùa sốt mác mác</p>
-                                    </div>
-                                    <div className='d-flex align-items-center justify-content-center flex-column'>
-                                        <p style={{ color: '#d69c52', fontSize: '12px', margin: '0' }}>68.000đ</p>
-                                        <button className='d-flex align-items-center justify-content-center' style={{ color: '#fff', fontSize: '12px', background: 'red', height: '20px', border: 'none' }}>Xóa</button>
-                                    </div>
+                            <div className='p-1' style={{ border: '1px solid rgb(195, 194, 194)', background: '#fff', height: '400px',position:'relative' }}>
+                                <div style={{height:'90%',overflowY: 'auto'}}>
+                                    <h5>Các món đã chọn</h5>
+                                    {Select_menuItems?.map((select_menuItem)=>(
+                                    <div className='d-flex align-items-center justify-content-between mt-3 pb-3' style={{ borderBottom: '1px solid #fff' }}>
+                                        <div className='d-flex align-items-center position-relative mt-2'>
+                                            <img style={{ width: '50px', height: '50px', borderRadius: '5px' }} src='https://bizweb.dktcdn.net/thumb/thumb/100/469/097/products/untitled1bb4fdbb3bd7845448a799-a1c5a559-3505-435f-9278-d7ba29e9c529.jpg?v=1667882632337' />
+                                            <p style={{ marginLeft: '4px', fontSize: '12px' }}>{select_menuItem.Name}</p>
+                                        </div>
+                                        <div className='d-flex align-items-center justify-content-center flex-column'>
+                                            <p style={{ color: '#d69c52', fontSize: '12px', margin: '0' }}>{formatNumber(select_menuItem.Price)}</p>
+                                            <button className='d-flex align-items-center justify-content-center' style={{ color: '#fff', fontSize: '12px', background: 'red', height: '20px', border: 'none' }}
+                                            onClick={()=>HandleAddSelectMenuItems(select_menuItem)}
+                                            >
+                                                Xóa</button>
+                                        </div>
 
 
+                                    </div>
+                                    ))}
+                                </div>
+                                <div style={{position:'absolute',button:'1px',fontSize:'20px',width:'100%',overflowX: 'auto'}}>
+                                    <span>Tổng:</span>
+                                    <span>{formatNumber(TotalPrice)}</span>
                                 </div>
                             </div>
 
@@ -141,7 +180,7 @@ const MenuSelection = ({ isVisible, onClose }) => {
 
 
                 <div className='menu-bt'>
-                    <button onClick={handleToBill}>
+                    <button onClick={()=>handleToBill()}>
                         Xác nhận
                     </button>
                     <button onClick={onClose}>

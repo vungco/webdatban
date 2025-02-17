@@ -17,8 +17,10 @@ return new class extends Migration
             $table->foreign('BookingID')->references('BookingID')->on('table_bookings')->onDelete('cascade');
             $table->unsignedInteger('CustomerID');
             $table->foreign('CustomerID')->references('CustomerID')->on('customers')->onDelete('cascade');
+            $table->unsignedInteger('PromotionID')->nullable();
+            $table->foreign('PromotionID')->references('PromotionID')->on('promotions')->onDelete('set null');            
             $table->dateTime('OrderDate');
-            $table->double('TotalUser');
+            $table->double('TotalAmount');
         });
     }
 

@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import Login from "../../../../pages/User/Login";
 import { Link } from 'react-router-dom'
 import Zalo from '../../../shared/Zalo/Zalo'
+import { useNavigate } from 'react-router-dom';
 
 
 function Header() {
+    const navigate = useNavigate();
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -14,7 +16,17 @@ function Header() {
 
     const [showLogin, setShowLogin] = useState(false);
     const handleLogin = () => {
-        setShowLogin(true);
+        // setShowLogin(true);
+        setIsOpen(false);
+
+        navigate('/Login')
+    };
+
+    const handleLogout = () => {
+        // setShowLogin(true);
+        localStorage.clear();
+        setIsOpen(false);
+        navigate('/')
 
     };
 
@@ -22,7 +34,8 @@ function Header() {
         setShowLogin(false);
     };
     return (
-        <><Login isVisible={showLogin} onClose={handleClose} />
+        <>
+        {/* <Login isVisible={showLogin} onClose={handleClose} /> */}
             <Zalo></Zalo>
             <div className='p-0' id='header'>
                 <div className='container-fluid header p-0'>
@@ -58,13 +71,13 @@ function Header() {
                                     <div className='col-md-2 user-container'>
                                         <i className="fas fa-user" onClick={toggleMenu}></i>
                                         {isOpen && (<div className='user-dropdown'>
-                                            <button onClick={handleLogin}>Đăng nhập</button>
+                                            <button onClick={handleLogin}>Đăng nhập | Đăng ký</button>
                                             <div className='d-flex flex-column' style={{ color: '#bd8133' }}>
                                                 <p className='m-0'>Xin chào Lâm!</p>
                                                 <Link to='/Order'>Đơn hàng</Link>
                                                 <Link to='/PersonalIn4'>Thông tin cá nhân</Link>
-                                                <Link to=''>Đăng xuất</Link>
                                             </div>
+                                                <button onClick={handleLogout}>Đăng xuất</button>
                                         </div>)}
                                     </div>
                                     <div className='col-md-2'>

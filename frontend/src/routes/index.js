@@ -12,16 +12,14 @@ import OrderDetails from "../pages/User/OrderDetails";
 import PersonalIn4 from "../pages/User/PersonalIn4";
 import HomeAd from "../pages/Admin/Home";
 import Account from "../pages/Admin/Account";
-import Table from "../pages/User/table";
-
-
+import Login from "../pages/User/Login";
 
 const publicRoutes = [
     {
         path: '/', component: Home
     },
     {
-        path: '/table', component: Table
+        path: '/Login', component: Login
     },
     {
         path: '/ProductDetails', component: ProductDetails

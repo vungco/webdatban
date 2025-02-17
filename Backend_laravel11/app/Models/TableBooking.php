@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class TableBooking extends Model
 {
+    public $timestamps = false;
+
     protected $primaryKey = "BookingID";
 
     protected $fillable = [
