@@ -19,7 +19,7 @@ class Order extends Model
     ];
 
     public function promotion(){
-        return $this->BelongsTo(Promotion::class);
+        return $this->BelongsTo(Promotion::class,'PromotionID','PromotionID');
     }
 
     public function customer(){
@@ -31,6 +31,6 @@ class Order extends Model
     }
 
     public function order_details(){
-        return $this->hasMany(OrderDetail::class);
+        return $this->hasMany(OrderDetail::class,'OrderID','OrderID');
     }
 }

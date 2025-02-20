@@ -1,36 +1,34 @@
 import React, { useEffect, useState } from "react";
-import TableComponent from '../../../components/shared/TableComponent'
-import ConfirmDialog from '../../../components/shared/ConfirmDialog'
-import userApi from '../../../api/userApi'
+import tableApi from '../../../api/tableApi'
 import CreateForm from "./create";
 import EditForm from "./edit";
 
-function Account() {
-    const [Users, setUsers] = useState(null);
+function Table() {
+    const [Tables, setTables] = useState(null);
     const [isShowFormCreate, setisShowFormCreate] = useState(false);
     const [isShowFormEdit, setisShowFormEdit] = useState(false);
 
     useEffect(()=>{
-        GetUsers();
+        GetTables();
     },[])
 
-    function GetUsers(){
-        userApi.getAll()
+    function GetTables(){
+        tableApi.getAll()
         .then(response=>{
-            setUsers(response.data);
+            setTables(response.data);
         })
         .catch(error=>{
             console.error('có lỗi trong quá trình lấy dl: '+error);
         })
     }
 
-    function DeleteUser(id){
-        let getconfirm = window.confirm('bạn có thực sự muốn xóa người dùng này không ?');
+    function Deletetable(id){
+        let getconfirm = window.confirm('bạn có thực sự muốn xóa bàn này không ?');
         if(getconfirm){
-            userApi.delete(id)
+            tableApi.delete(id)
             .then(response=>{
-                alert('bạn đã xóa người dùng thành công');
-                GetUsers();
+                alert('bạn đã xóa bàn thành công');
+                GetTables();
                 
             })
             .catch(error=>{
@@ -51,7 +49,7 @@ function Account() {
                     {isShowFormCreate?
                     <CreateForm
                     setisShowFormCreate={setisShowFormCreate}
-                    GetUsers={GetUsers}
+                    GetTables={GetTables}
                     />
                     :
                     ''
@@ -60,40 +58,44 @@ function Account() {
             <table className="table table-bordered table-hover">
                 <thead className="table-dark">
                     <tr>
-                        <th>Tên người dùng</th>
-                        <th>Email</th>
-                        <th>Vai trò</th>                        
+                        <th>Tên bàn</th>
+                        <th>Kích thước bàn</th>
+                        <th>Trạng thái</th>                        
+        
                         <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {Users?.map((user) => (
+                    {Tables?.map((table) => (
                         <tr 
-                        key={user.id}
+                        key={table.TableID}
                         >
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>{user.role}</td>
+                            <td>{table.TableNumber}</td>
+                            <td>{table.Capacity}</td>
+                            <td>{table.Status==0?'còn bàn':'đã đặt'}</td>
                             <td>
                                 <button
                                     className="btn btn-warning btn-sm me-2"
-                                    onClick={() => setisShowFormEdit(user)}
+                                    onClick={() => setisShowFormEdit(table)}
                                 >
                                     <i className="fa fa-edit"></i> Sửa
                                 </button>
-                                {isShowFormEdit.id ==user.id ?
+                                {isShowFormEdit.TableID ==table.TableID ?
                                 <EditForm
                                 setisShowFormEdit={setisShowFormEdit}
-                                GetUsers={GetUsers}
-                                data={{ name: user.name, email: user.email, role: user.role }}
-                                id={user.id}
+                                GetTables={GetTables}
+                                data={{ TableNumber: table.TableNumber,
+                                     Capacity: table.Capacity, 
+                                     Status: table.Status, 
+                                    }}
+                                id={table.TableID}
                                 />
                                 :
                                 ''
                                 }
                                 <button
                                     className="btn btn-danger btn-sm"
-                                    onClick={() => DeleteUser(user.id)}
+                                    onClick={() => Deletetable(table.TableID)}
                                 >
                                     <i className="fa fa-trash"></i> Xóa
                                 </button>
@@ -106,4 +108,4 @@ function Account() {
     )
 }
 
-export default Account
+export default Table

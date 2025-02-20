@@ -21,10 +21,10 @@ class TableBooking extends Model
     }
 
     public function orders(){
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class,'BookingID','BookingID');
     }
 
     public function booking_tables(){
-        return $this->hasMany(BookingTable::class);
+        return $this->hasMany(BookingTable::class,'BookingID','BookingID');
     }
 }

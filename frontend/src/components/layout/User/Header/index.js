@@ -26,7 +26,7 @@ function Header() {
         // setShowLogin(true);
         localStorage.clear();
         setIsOpen(false);
-        navigate('/')
+        navigate('/Login')
 
     };
 
@@ -74,8 +74,14 @@ function Header() {
                                             <button onClick={handleLogin}>Đăng nhập | Đăng ký</button>
                                             <div className='d-flex flex-column' style={{ color: '#bd8133' }}>
                                                 <p className='m-0'>Xin chào Lâm!</p>
-                                                <Link to='/Order'>Đơn hàng</Link>
-                                                <Link to='/PersonalIn4'>Thông tin cá nhân</Link>
+                                                <Link to='/Show_booking'
+                                                onClick={()=>setIsOpen(false)}
+                                                >
+                                                    Xem lượt đặt</Link>
+                                                <Link to='/PersonalIn4'
+                                                onClick={()=>setIsOpen(false)}
+                                                >
+                                                    Thông tin cá nhân</Link>
                                             </div>
                                                 <button onClick={handleLogout}>Đăng xuất</button>
                                         </div>)}

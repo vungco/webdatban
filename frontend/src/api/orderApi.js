@@ -8,6 +8,9 @@ const orderApi = {
   create(data) {
     return axiosClient.post('/orders', data);
   },
+  getAllOfBooking(id) {
+    return axiosClient.get(`/booking/${id}/orders`);
+  },
 };
 
 export default orderApi;

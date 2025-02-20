@@ -77,4 +77,20 @@ class OrderController extends Controller
             "message" => "đã xóa đơn hàng thành công"
         ]);
     }
+
+    public function getOrderDetailOfOrder(Order $order)
+    {
+        $order_details = $order->order_details()->with('menu_item')->get(); // Lấy danh sách các lượt đặt bàn
+
+        if ($order_details->isNotEmpty()) {
+            return response()->json([
+                "message" => "Đã lấy các đơn hàng được đặt",
+                "data" => $order_details, // Trả về danh sách đặt bàn thay vì customer
+            ]);
+        } else {
+            return response()->json([
+                "message" => "ko có đơn hang nào cả",
+            ], 404);
+        }
+    }
 }

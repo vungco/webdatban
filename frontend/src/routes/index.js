@@ -8,15 +8,26 @@ import Thanks from "../pages/User/Thanks";
 import Bookings from "../pages/User/Bookings";
 import Bill from "../pages/User/Bill";
 import Order from "../pages/User/Order";
-import OrderDetails from "../pages/User/OrderDetails";
 import PersonalIn4 from "../pages/User/PersonalIn4";
 import HomeAd from "../pages/Admin/Home";
 import Account from "../pages/Admin/Account";
 import Login from "../pages/User/Login";
+import Show_bookingTable from "../pages/User/show_bookingTable";
+import Show_booking from "../pages/User/show_booking";
+import OrderDetail from "../pages/User/OrderDetail";
+import Customer from "../pages/Admin/Customer";
+import Promotion from "../pages/Admin/Promotion";
+import Table from "../pages/Admin/Table";
 
 const publicRoutes = [
     {
         path: '/', component: Home
+    },
+    {
+        path: '/Show_booking', component: Show_booking
+    },
+    {
+        path: '/Show_bookingTable/:BookingID', component: Show_bookingTable
     },
     {
         path: '/Login', component: Login
@@ -40,19 +51,28 @@ const publicRoutes = [
         path: '/Bill', component: Bill
     },
     {
-        path: '/Order', component: Order
+        path: '/Order/:BookingID', component: Order
     },
     {
         path: '/PersonalIn4', component: PersonalIn4
     },
     {
-        path: '/OrderDetails', component: OrderDetails
+        path: '/OrderDetail/:OrderID', component: OrderDetail
     },
     {
         path: '/Admin/Home', component: HomeAd, layout: Admin
     },
     {
         path: '/Admin/Account', component: Account, layout: Admin
+    },
+    {
+        path: '/Admin/Customer', component: Customer, layout: Admin
+    },
+    {
+        path: '/Admin/Promotion', component: Promotion, layout: Admin
+    },
+    {
+        path: '/Admin/Table', component: Table, layout: Admin
     },
 ];
 

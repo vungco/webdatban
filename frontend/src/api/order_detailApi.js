@@ -8,6 +8,9 @@ const order_detailApi = {
   create(data) {
     return axiosClient.post('/order_details', data);
   },
+  getAllOfOrder(id) {
+    return axiosClient.get(`/order/${id}/order_details`);
+  },
 };
 
 export default order_detailApi;

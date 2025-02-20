@@ -1,36 +1,34 @@
 import React, { useEffect, useState } from "react";
-import TableComponent from '../../../components/shared/TableComponent'
-import ConfirmDialog from '../../../components/shared/ConfirmDialog'
-import userApi from '../../../api/userApi'
+import customerApi from '../../../api/customerApi'
 import CreateForm from "./create";
 import EditForm from "./edit";
 
-function Account() {
-    const [Users, setUsers] = useState(null);
+function Customer() {
+    const [Customers, setCustomers] = useState(null);
     const [isShowFormCreate, setisShowFormCreate] = useState(false);
     const [isShowFormEdit, setisShowFormEdit] = useState(false);
 
     useEffect(()=>{
-        GetUsers();
+        GetCustomers();
     },[])
 
-    function GetUsers(){
-        userApi.getAll()
+    function GetCustomers(){
+        customerApi.getAll()
         .then(response=>{
-            setUsers(response.data);
+            setCustomers(response.data);
         })
         .catch(error=>{
             console.error('có lỗi trong quá trình lấy dl: '+error);
         })
     }
 
-    function DeleteUser(id){
-        let getconfirm = window.confirm('bạn có thực sự muốn xóa người dùng này không ?');
+    function Deletecustomer(id){
+        let getconfirm = window.confirm('bạn có thực sự muốn xóa khách hàng này không ?');
         if(getconfirm){
-            userApi.delete(id)
+            customerApi.delete(id)
             .then(response=>{
                 alert('bạn đã xóa người dùng thành công');
-                GetUsers();
+                GetCustomers();
                 
             })
             .catch(error=>{
@@ -51,7 +49,7 @@ function Account() {
                     {isShowFormCreate?
                     <CreateForm
                     setisShowFormCreate={setisShowFormCreate}
-                    GetUsers={GetUsers}
+                    GetCustomers={GetCustomers}
                     />
                     :
                     ''
@@ -60,40 +58,46 @@ function Account() {
             <table className="table table-bordered table-hover">
                 <thead className="table-dark">
                     <tr>
-                        <th>Tên người dùng</th>
-                        <th>Email</th>
-                        <th>Vai trò</th>                        
+                        <th>Tên khách hàng</th>
+                        <th>Tên tài khoản</th>
+                        <th>Số điện thoại</th>                        
+                        <th>Địa chỉ</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {Users?.map((user) => (
+                    {Customers?.map((customer) => (
                         <tr 
-                        key={user.id}
+                        key={customer.CustomerID}
                         >
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>{user.role}</td>
+                            <td>{customer.FullName}</td>
+                            <td>{customer.user.name}</td>
+                            <td>{customer.PhoneNumber}</td>
+                            <td>{customer.Address}</td>
                             <td>
                                 <button
                                     className="btn btn-warning btn-sm me-2"
-                                    onClick={() => setisShowFormEdit(user)}
+                                    onClick={() => setisShowFormEdit(customer)}
                                 >
                                     <i className="fa fa-edit"></i> Sửa
                                 </button>
-                                {isShowFormEdit.id ==user.id ?
+                                {isShowFormEdit.CustomerID ==customer.CustomerID ?
                                 <EditForm
                                 setisShowFormEdit={setisShowFormEdit}
-                                GetUsers={GetUsers}
-                                data={{ name: user.name, email: user.email, role: user.role }}
-                                id={user.id}
+                                GetCustomers={GetCustomers}
+                                data={{ FullName: customer.FullName,
+                                     PhoneNumber: customer.PhoneNumber, 
+                                     Address: customer.Address, 
+                                     UserID: customer.UserID
+                                    }}
+                                id={customer.CustomerID}
                                 />
                                 :
                                 ''
                                 }
                                 <button
                                     className="btn btn-danger btn-sm"
-                                    onClick={() => DeleteUser(user.id)}
+                                    onClick={() => Deletecustomer(customer.CustomerID)}
                                 >
                                     <i className="fa fa-trash"></i> Xóa
                                 </button>
@@ -106,4 +110,4 @@ function Account() {
     )
 }
 
-export default Account
+export default Customer

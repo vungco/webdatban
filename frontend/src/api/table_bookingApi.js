@@ -5,6 +5,9 @@ const table_bookingApi = {
   getAll(params) {
     return axiosClient.get('/table_bookings', { params });
   },
+  getAllOfCustomer() {
+    return axiosClient.get(`/customer/table_bookings`);
+  },
 
   getById(id) {
     return axiosClient.get(`/table_bookings/${id}`);

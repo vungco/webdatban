@@ -1,21 +1,16 @@
-import orderApi from "../../../api/orderApi";
+import order_detailApi from "../../../api/order_detailApi";
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-function Order(){
-    const navigate = useNavigate();
-    const [orders,setorders] = useState(null);
-    const BookingID = useParams().BookingID;
-
-    const handleToOrderDetail = (OrderID) => {
-        navigate(`/OrderDetail/${OrderID}`);
-    };
+function OrderDetail(){
+    const [order_details,setorder_details] = useState(null);
+    const OrderID = useParams().OrderID;
 
     useEffect(()=>{
-        orderApi.getAllOfBooking(BookingID)
+        order_detailApi.getAllOfOrder(OrderID)
             .then(response=>{
-                setorders(response.data)
+                setorder_details(response.data)
             })
             .catch(error=>{
                 console.error('có lỗi trong quá trình lấy dl: '+error)
@@ -36,21 +31,22 @@ function Order(){
                     }}>
                         <thead>
                             <tr style={{ background: '#135b50', color: 'white' }}>
-                                <th scope="col">Thời gian đơn hàng</th>
-                                <th scope="col">Tổng tiền</th>
-                                <th scope="col">Mã giảm giá áp dụng</th>
-                                <th scope="col">Xem chi tiết đơn hàng</th>
+                                <th scope="col">Ảnh món ăn</th>
+                                <th scope="col">Tên món ăn</th>
+                                <th scope="col">Đơn giá</th>
+                                <th scope="col">Số lượng</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {orders?.map(order=>(
+                            {order_details?.map(menu_item=>(
                                 <tr style={{ background: '#135b50', color: 'white' }}>
 
-                                <td>{order.OrderDate}</td>
-                                <td>{order.TotalAmount}</td>
-                                <td>{order.promotion?.Discount?order.promotion?.Discount:0}</td>
-                                <td><i className="fa-solid fa-eye" onClick={()=>handleToOrderDetail(order.OrderID)} /></td>
-
+                                <td>
+                                    <img style={{ width: '108px' }} src={menu_item.menu_item.ImageURL} />
+                                </td>
+                                <td>{menu_item.menu_item.Name}</td>
+                                <td>{menu_item.Price}</td>
+                                <td>{menu_item.Quantity}</td>
                                 </tr>
                             ))}
                             
@@ -62,4 +58,4 @@ function Order(){
     )
 }
 
-export default Order
+export default OrderDetail

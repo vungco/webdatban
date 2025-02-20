@@ -1,36 +1,34 @@
 import React, { useEffect, useState } from "react";
-import TableComponent from '../../../components/shared/TableComponent'
-import ConfirmDialog from '../../../components/shared/ConfirmDialog'
-import userApi from '../../../api/userApi'
+import promotionApi from '../../../api/promotionApi'
 import CreateForm from "./create";
 import EditForm from "./edit";
 
-function Account() {
-    const [Users, setUsers] = useState(null);
+function Promotion() {
+    const [Promotions, setPromotions] = useState(null);
     const [isShowFormCreate, setisShowFormCreate] = useState(false);
     const [isShowFormEdit, setisShowFormEdit] = useState(false);
 
     useEffect(()=>{
-        GetUsers();
+        GetPromotions();
     },[])
 
-    function GetUsers(){
-        userApi.getAll()
+    function GetPromotions(){
+        promotionApi.getAllOfAdmin()
         .then(response=>{
-            setUsers(response.data);
+            setPromotions(response.data);
         })
         .catch(error=>{
             console.error('có lỗi trong quá trình lấy dl: '+error);
         })
     }
 
-    function DeleteUser(id){
-        let getconfirm = window.confirm('bạn có thực sự muốn xóa người dùng này không ?');
+    function Deletepromotion(id){
+        let getconfirm = window.confirm('bạn có thực sự muốn xóa mã giảm giá này không ?');
         if(getconfirm){
-            userApi.delete(id)
+            promotionApi.delete(id)
             .then(response=>{
-                alert('bạn đã xóa người dùng thành công');
-                GetUsers();
+                alert('bạn đã xóa mã giảm giá thành công');
+                GetPromotions();
                 
             })
             .catch(error=>{
@@ -51,7 +49,7 @@ function Account() {
                     {isShowFormCreate?
                     <CreateForm
                     setisShowFormCreate={setisShowFormCreate}
-                    GetUsers={GetUsers}
+                    GetPromotions={GetPromotions}
                     />
                     :
                     ''
@@ -60,40 +58,51 @@ function Account() {
             <table className="table table-bordered table-hover">
                 <thead className="table-dark">
                     <tr>
-                        <th>Tên người dùng</th>
-                        <th>Email</th>
-                        <th>Vai trò</th>                        
+                        <th>Tiêu đề</th>
+                        <th>Mô tả</th>
+                        <th>Giảm giá:</th>                        
+                        <th>Ngày bắt đầu</th>
+                        <th>Ngày kết thúc</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {Users?.map((user) => (
+                    {Promotions?.map((promotion) => (
                         <tr 
-                        key={user.id}
+                        key={promotion.PromotionID}
                         >
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>{user.role}</td>
+                            <td>{promotion.Title}</td>
+                            <td>
+                                {promotion.Description}
+                            </td>
+                            <td>{promotion.Discount}</td>
+                            <td>{promotion.StartDate}</td>
+                            <td>{promotion.EndDate}</td>
                             <td>
                                 <button
                                     className="btn btn-warning btn-sm me-2"
-                                    onClick={() => setisShowFormEdit(user)}
+                                    onClick={() => setisShowFormEdit(promotion)}
                                 >
                                     <i className="fa fa-edit"></i> Sửa
                                 </button>
-                                {isShowFormEdit.id ==user.id ?
+                                {isShowFormEdit.PromotionID ==promotion.PromotionID ?
                                 <EditForm
                                 setisShowFormEdit={setisShowFormEdit}
-                                GetUsers={GetUsers}
-                                data={{ name: user.name, email: user.email, role: user.role }}
-                                id={user.id}
+                                GetPromotions={GetPromotions}
+                                data={{ Title: promotion.Title,
+                                     Description: promotion.Description, 
+                                     Discount: promotion.Discount, 
+                                     StartDate : promotion.StartDate,
+                                     EndDate : promotion.EndDate
+                                    }}
+                                id={promotion.PromotionID}
                                 />
                                 :
                                 ''
                                 }
                                 <button
                                     className="btn btn-danger btn-sm"
-                                    onClick={() => DeleteUser(user.id)}
+                                    onClick={() => Deletepromotion(promotion.PromotionID)}
                                 >
                                     <i className="fa fa-trash"></i> Xóa
                                 </button>
@@ -106,4 +115,4 @@ function Account() {
     )
 }
 
-export default Account
+export default Promotion

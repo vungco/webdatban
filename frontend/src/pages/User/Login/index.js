@@ -31,11 +31,19 @@ const Login = ({ isVisible, onClose }) => {
         authUser.login(data)
             .then(response=>{
                 localStorage.setItem('token',response.token);
-                navigate('/');
+                HandleCheckRole(response.data.role)
             })
             .catch(error=>{
                 console.error('Có lỗi khi đăng nhập '+error+'-'+error.response.data.message)
             })
+    }
+
+    function HandleCheckRole(role){
+        if(role=='user'){
+            navigate('/');
+        }else{
+            navigate('/Admin/Home');
+        }
     }
 
     function HandleRegester(e){

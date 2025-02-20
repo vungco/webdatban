@@ -4,6 +4,7 @@ import customerApi from "../../../api/customerApi";
 import authUser from '../../../api/authUser';
 import AddCustomer from './addCustomer';
 import EditCustomer from './editCustomer';
+import EditUser from './editUser';
 
 
 function PersonalIn4() {
@@ -20,6 +21,7 @@ function PersonalIn4() {
 
     const [isFormVisibleAdd, setIsFormVisibleAdd] = useState(false);
     const [isFormVisibleEdit, setIsFormVisibleEdit] = useState(false);
+    const [isFormVisibleUser, setIsFormVisibleUser] = useState(false);
 
     // Mở modal chỉnh sửa
     const handleAddClick = () => setIsFormVisibleAdd(true);
@@ -32,6 +34,11 @@ function PersonalIn4() {
 
     // Đóng modal
     const handleCloseModalEdit = () => setIsFormVisibleEdit(false);
+
+    const handleUserClick = () => setIsFormVisibleUser(true);
+
+    // Đóng modal
+    const handleCloseModalUser = () => setIsFormVisibleUser(false);
 
     useEffect(()=>{
         authUser.get_user_id()
@@ -104,8 +111,25 @@ function PersonalIn4() {
                                     <span>Email:</span>
                                     <span>{email}</span>
                                 </p>
-                                <button style={{ height: '40px', width: '150px', borderRadius: '5px', color: '#fff', background: '#d69c52', border: 'none' }} >Đổi mật khẩu</button>
+                                <button 
+                                onClick={()=>handleUserClick()}
+                                style={{ height: '40px', width: '150px', borderRadius: '5px', color: '#fff', background: '#d69c52', border: 'none' }} 
+                                >
+                                    Chỉnh sửa
+                                </button>
 
+                                {isFormVisibleUser && (
+                                    <>
+                                    {/* <div className="overlay"></div> */}
+                                    <EditUser 
+                                    setName={setName} 
+                                    setEmail={setEmail} 
+                                    user_id={user_id}
+                                    data={{name,email}}
+                                    onClose={handleCloseModalUser}
+                                    />
+                                    </>
+                                )}
                             </div>
                         }
                         {selectedTab === "info2" &&

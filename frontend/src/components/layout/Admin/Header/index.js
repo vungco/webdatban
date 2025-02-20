@@ -1,8 +1,11 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
 
 function Header() {
+    const navigate = useNavigate();
 
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -23,6 +26,12 @@ function Header() {
             document.removeEventListener("click", handleClickOutside);
         };
     }, []);
+
+    const handleLogout = () => {
+        localStorage.clear();
+        navigate('/Login')
+
+    };
 
     return (
         <div className='container' style={{ width: '100%', height: '80px', background: '#fff', position: 'fixed', boxShadow: '0px 1px 10px rgba(0, 0, 0, 0.2)' }}>
@@ -48,7 +57,7 @@ function Header() {
                             <div className="user-dropdown">
                                 <Link to=''>Thông tin cá nhân</Link>
                                 <Link to=''>Cài đặt</Link>
-                                <Link to=''>Đăng xuất</Link>
+                                <span onClick={()=>handleLogout()}>Đăng xuất</span>
                             </div>
                         )}
 

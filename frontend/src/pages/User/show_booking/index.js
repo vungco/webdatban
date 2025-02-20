@@ -1,24 +1,26 @@
-import orderApi from "../../../api/orderApi";
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import table_bookingApi from '../../../api/table_bookingApi';
 
-function Order(){
+function Show_booking() {
     const navigate = useNavigate();
-    const [orders,setorders] = useState(null);
-    const BookingID = useParams().BookingID;
+    const [bookings,setBookings] = useState(null);
 
-    const handleToOrderDetail = (OrderID) => {
-        navigate(`/OrderDetail/${OrderID}`);
+    const handleToOrder = (BookingID) => {
+        navigate(`/Order/${BookingID}`); // Chuyển đến trang Pay
+    };
+
+    const handleToTable = (BookingID) => {
+        navigate(`/Show_bookingTable/${BookingID}`); // Chuyển đến trang Pay
     };
 
     useEffect(()=>{
-        orderApi.getAllOfBooking(BookingID)
+        table_bookingApi.getAllOfCustomer()
             .then(response=>{
-                setorders(response.data)
+                setBookings(response.data)
             })
             .catch(error=>{
-                console.error('có lỗi trong quá trình lấy dl: '+error)
+                console.error('có lỗi trong quá trình lấy id')
             })
     },[])
 
@@ -36,21 +38,22 @@ function Order(){
                     }}>
                         <thead>
                             <tr style={{ background: '#135b50', color: 'white' }}>
-                                <th scope="col">Thời gian đơn hàng</th>
-                                <th scope="col">Tổng tiền</th>
-                                <th scope="col">Mã giảm giá áp dụng</th>
-                                <th scope="col">Xem chi tiết đơn hàng</th>
+                                <th scope="col">Thời gian đặt bàn</th>
+                                <th scope="col">Trạng thái lượt đặt</th>
+                                <th scope="col">Các bàn đã đặt</th>
+                                <th scope="col">Chi tiết đơn hàng</th>
+                                <th scope="col" />
                             </tr>
                         </thead>
                         <tbody>
-                            {orders?.map(order=>(
+                            {bookings?.map(booking=>(
                                 <tr style={{ background: '#135b50', color: 'white' }}>
 
-                                <td>{order.OrderDate}</td>
-                                <td>{order.TotalAmount}</td>
-                                <td>{order.promotion?.Discount?order.promotion?.Discount:0}</td>
-                                <td><i className="fa-solid fa-eye" onClick={()=>handleToOrderDetail(order.OrderID)} /></td>
+                                <td>{booking.BookingTime}</td>
+                                <td>{booking.Status?'hoàn thành':'chưa hoàn thành'}</td>
 
+                                <td><i className="fa-solid fa-eye" onClick={()=>handleToTable(booking.BookingID)} /></td>
+                                <td><i className="fa-solid fa-eye" onClick={()=>handleToOrder(booking.BookingID)} /></td>
                                 </tr>
                             ))}
                             
@@ -62,4 +65,4 @@ function Order(){
     )
 }
 
-export default Order
+export default Show_booking

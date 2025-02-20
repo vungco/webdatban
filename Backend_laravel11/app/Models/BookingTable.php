@@ -18,6 +18,6 @@ class BookingTable extends Model
     }
 
     public function table(){
-        return $this->belongsTo(Table::class);
+        return $this->belongsTo(Table::class,'TableID','TableID');
     }
 }

@@ -28,7 +28,7 @@ class LoginController extends Controller
             return response()->json([
                 'message' => 'Đăng nhập thành công',
                 'token' => $token,
-                'user' => $user
+                'data' => $user
             ]);
         }
 

@@ -1,9 +1,12 @@
-// src/api/customerApi.js
 import axiosClient from './axiosClient';
 
 const table_bookingApi = {
   getAll(params) {
     return axiosClient.get('/booking_tables', { params });
+  },
+
+  getAllOfBooking(id) {
+    return axiosClient.get(`/booking/${id}/booking_tables`);
   },
 
   getById(id) {

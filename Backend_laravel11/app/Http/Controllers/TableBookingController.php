@@ -77,4 +77,36 @@ class TableBookingController extends Controller
             "message" => "đã xóa lượt đặt thành công"
         ]);
     }
+    
+    public function getTableOfBooking(TableBooking $booking)
+    {
+        $tables = $booking->booking_tables()->with('table')->get(); // Lấy danh sách các lượt đặt bàn
+
+        if ($tables->isNotEmpty()) {
+            return response()->json([
+                "message" => "Đã lấy các bàn được đặt",
+                "data" => $tables, // Trả về danh sách đặt bàn thay vì customer
+            ]);
+        } else {
+            return response()->json([
+                "message" => "ko có bàn nào cả",
+            ], 404);
+        }
+    }
+    
+    public function getOrderOfBooking(TableBooking $booking)
+    {
+        $tables = $booking->orders()->with('promotion')->get(); // Lấy danh sách các lượt đặt bàn
+
+        if ($tables->isNotEmpty()) {
+            return response()->json([
+                "message" => "Đã lấy các đơn hàng được đặt",
+                "data" => $tables, // Trả về danh sách đặt bàn thay vì customer
+            ]);
+        } else {
+            return response()->json([
+                "message" => "ko có đơn hang nào cả",
+            ], 404);
+        }
+    }
 }

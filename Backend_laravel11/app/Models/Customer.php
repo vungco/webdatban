@@ -18,7 +18,7 @@ class Customer extends Model
     ];
 
     public function user(){
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class,'UserID','id');
     }
 
     public function orders(){
@@ -26,6 +26,6 @@ class Customer extends Model
     }
 
     public function table_bookings(){
-        return $this->hasMany(TableBooking::class);
+        return $this->hasMany(TableBooking::class,'CustomerID','CustomerID');
     }
 }

@@ -37,21 +37,25 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('user/get_customer',[CustomerController::class,'getBy_iduser']);
     Route::get('promotions/valid',[PromotionController::class,'showValidVouchers']);
     Route::get('check_banking',[BankingController::class,'banking']);
+    Route::get('customer/table_bookings', [CustomerController::class, 'getBookingOfCustomer']);
+    Route::get('booking/{booking}/booking_tables', [TableBookingController::class, 'getTableOfBooking']);
+    Route::get('booking/{booking}/orders', [TableBookingController::class, 'getOrderOfBooking']);
+    Route::get('order/{order}/order_details', [OrderController::class, 'getOrderDetailOfOrder']);
 
     Route::apiResource('booking_tables',BookingTableController::class)->only('store','index');
 
     
 
     Route::middleware('check.admin')->group(function () {
-        Route::apiResource('promotions',PromotionController::class)->only('store','update','delete');
-        Route::apiResource('table_bookings',TableBookingController::class)->only('update','delete');
-        Route::apiResource('tables',TableController::class)->only('store','update','delete');
-        Route::apiResource('orders',OrderController::class)->only('update','delete');
-        Route::apiResource('menu_categorys',MenuCategoryController::class)->only('store','update','delete');
-        Route::apiResource('menu_items',MenuItemController::class)->only('store','update','delete');
-        Route::apiResource('users',UserController::class)->only('store','delete');
-        Route::apiResource('booking_tables',BookingTableController::class)->only('update','delete');
-        Route::apiResource('order_details',OrderDetailController::class)->only('update','delete');
+        Route::apiResource('promotions',PromotionController::class)->only('store','update','destroy');
+        Route::apiResource('table_bookings',TableBookingController::class)->only('update','destroy');
+        Route::apiResource('tables',TableController::class)->only('store','update','destroy');
+        Route::apiResource('orders',OrderController::class)->only('update','destroy');
+        Route::apiResource('menu_categorys',MenuCategoryController::class)->only('store','update','destroy');
+        Route::apiResource('menu_items',MenuItemController::class)->only('store','update','destroy');
+        Route::apiResource('users',UserController::class)->only('store','destroy','index');
+        Route::apiResource('booking_tables',BookingTableController::class)->only('update','destroy');
+        Route::apiResource('order_details',OrderDetailController::class)->only('update','destroy');
     });
 
     Route::get('logout',[LogoutController::class,'logout']);

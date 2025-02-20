@@ -12,7 +12,12 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        $customers = Customer::with('user')->get();
+        
+        return response()->json([
+            "message" => "đã hiển thị khách hàng thành công",
+            "data" => $customers,
+        ]);
     }
 
     /**
@@ -76,6 +81,21 @@ class CustomerController extends Controller
                 "message" => "tài khoản này chưa có khách hàng",
             ],404); 
         }
-        
+    }
+
+    public function getBookingOfCustomer(Request $request)
+    {
+        $bookings = $request->user()->customer->table_bookings()->get(); // Lấy danh sách các lượt đặt bàn
+
+        if ($bookings->isNotEmpty()) {
+            return response()->json([
+                "message" => "Đã lấy các lượt đặt thuộc về khách hàng này",
+                "data" => $bookings, // Trả về danh sách đặt bàn thay vì customer
+            ]);
+        } else {
+            return response()->json([
+                "message" => "Khách hàng này chưa đặt lần nào cả",
+            ], 404);
+        }
     }
 }

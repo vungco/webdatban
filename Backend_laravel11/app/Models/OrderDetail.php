@@ -20,6 +20,6 @@ class OrderDetail extends Model
     }
 
     public function menu_item(){
-        return $this->BelongsTo(MenuItem::class);
+        return $this->BelongsTo(MenuItem::class,'MenuItemID','MenuItemID');
     }
 }
