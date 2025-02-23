@@ -23,7 +23,7 @@ class Order extends Model
     }
 
     public function customer(){
-        return $this->BelongsTo(Customer::class);
+        return $this->BelongsTo(Customer::class,'CustomerID','CustomerID');
     }
 
     public function table_booking(){

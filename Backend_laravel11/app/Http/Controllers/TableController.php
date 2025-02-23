@@ -81,4 +81,22 @@ class TableController extends Controller
             "message" => "đã xóa bàn thành công"
         ]);
     }
+    
+    public function SetStatus(Table $table)
+    {
+        $table->update(['Status'=>1]);
+
+        return response()->json([
+            "message" => "đã sửa trạng thái bàn thành công"
+        ]);
+    }
+
+    public function ResetStatus()
+    {
+        Table::query()->update(['Status' => 0]);
+
+        return response()->json([
+            "message" => "đã reset trạng thái bàn thành công"
+        ]);
+    }
 }

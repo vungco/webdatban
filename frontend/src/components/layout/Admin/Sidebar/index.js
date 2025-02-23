@@ -28,11 +28,11 @@ function Sidebar() {
                 </li>
                 <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Account'><i className="fas fa-user me-2"></i> Tài khoản</Link> </li>
                 <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Customer'><i className="fas fa-user me-2"></i> Khách hàng</Link> </li>
-                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Account'><i className="fas fa-list me-2"></i>Danh mục món</Link> </li>
-                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Account'><i className="fas fa-clipboard-list me-2"></i> Đơn đặt </Link> </li>
-                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Promotion'><i className="fas fa-tags me-2"></i> Khuyến mại</Link> </li>
+                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Menu_category'><i className="fas fa-list me-2"></i>Danh mục món</Link> </li>
+                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Menu_item'><i className="fas fa-utensils me-2"></i>Món</Link> </li>
                 <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Table'><i className="fas fa-table me-2"></i>Bàn</Link> </li>
-                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Account'><i className="fas fa-utensils me-2"></i>Món</Link> </li>
+                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Promotion'><i className="fas fa-tags me-2"></i> Khuyến mại</Link> </li>
+                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Table_booking'><i className="fas fa-clipboard-list me-2"></i> Lượt đặt bàn </Link> </li>
 
 
 

@@ -20,7 +20,7 @@ class MenuItem extends Model
     ];
 
     public function menu_category(){
-        return $this->BelongsTo(MenuCategory::class);
+        return $this->BelongsTo(MenuCategory::class,'CategoryID','CategoryID');
     }
 
     public function order_details(){

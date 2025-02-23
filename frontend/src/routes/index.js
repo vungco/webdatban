@@ -18,6 +18,12 @@ import OrderDetail from "../pages/User/OrderDetail";
 import Customer from "../pages/Admin/Customer";
 import Promotion from "../pages/Admin/Promotion";
 import Table from "../pages/Admin/Table";
+import Menu_category from "../pages/Admin/Menu_category";
+import Menu_item from "../pages/Admin/Menu_item";
+import Table_booking from "../pages/Admin/Table_booking";
+import Booking_table from "../pages/Admin/Booking_table";
+import OrderAdmin from "../pages/Admin/Order";
+import Booking_tableAdmin from "../pages/Admin/Booking_table";
 
 const publicRoutes = [
     {
@@ -73,6 +79,21 @@ const publicRoutes = [
     },
     {
         path: '/Admin/Table', component: Table, layout: Admin
+    },
+    {
+        path: '/Admin/Menu_category', component: Menu_category, layout: Admin
+    },
+    {
+        path: '/Admin/Menu_item', component: Menu_item, layout: Admin
+    },
+    {
+        path: '/Admin/Table_booking', component: Table_booking, layout: Admin
+    },
+    {
+        path: '/Admin/Order/:BookingID/:CustomerID', component:OrderAdmin , layout: Admin
+    },
+    {
+        path: '/Admin/Booking_table/:BookingID/:CustomerID', component: Booking_tableAdmin, layout: Admin
     },
 ];
 

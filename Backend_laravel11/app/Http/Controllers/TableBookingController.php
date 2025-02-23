@@ -13,7 +13,12 @@ class TableBookingController extends Controller
      */
     public function index()
     {
-        //
+        $tableBookings = TableBooking::with('customer')->get();
+        
+        return response()->json([
+            "message" => "hiển thị lượt đặt thành công",
+            "data" => $tableBookings,
+        ]);
     }
 
     /**
@@ -56,7 +61,7 @@ class TableBookingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TableBooking $tableBooking)
+    public function update(BookingRequest $request, TableBooking $tableBooking)
     {
         $tableBooking->update($request->all());
 

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MenuCategory;
 use App\Models\MenuItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class MenuItemController extends Controller
 {
@@ -12,7 +15,7 @@ class MenuItemController extends Controller
      */
     public function index()
     {
-        $menuItems = MenuItem::all();
+        $menuItems = MenuItem::with('menu_category')->get();
         
         return response()->json([
             "message" => "đã tạo sản phẩm thành công",
@@ -33,11 +36,24 @@ class MenuItemController extends Controller
      */
     public function store(Request $request)
     {
+        $file = $request->file('img');
+
+        $category = MenuCategory::where('CategoryID',$request->CategoryID)->first();
+            $file = $request->file('img');
+
+            $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+            $file_name = time() . '-' . $request->Name .'.'. $extension;
+            $filterFile_name = preg_replace('/[^A-Za-z0-9\-_.]/', '_', $file_name);
+
+            $file->move(public_path('uploads/Categories/'.$category->CategoryName),$filterFile_name);
+            
+            $request->merge(['ImageURL'=> $filterFile_name]);
+
         $menuItem = MenuItem::create($request->all());
         
         return response()->json([
             "message" => "đã tạo sản phẩm thành công",
-            "data" => $menuItem,
+            "data"=> $menuItem,
         ]);
     }
 
@@ -62,11 +78,36 @@ class MenuItemController extends Controller
      */
     public function update(Request $request, MenuItem $menuItem)
     {
-        $menuItem->update($request->all());
+        $category = MenuCategory::where('CategoryID',$request->CategoryID)->first();
+
+        if($request->has('img')){
+        $file = $request->file('img');
+
+         //xóa bỏ ảnh cũ
+        $filePath = public_path('uploads\\Categories\\'.$category->CategoryName.'\\'.$menuItem->ImageURL);
+        if (file_exists($filePath)) {
+            unlink($filePath);
+            // Thông báo thành công
+        }
+        
+        // lưu ảnh mới
+        $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+        $file_name = time() . '-' . $request->Name .'.'. $extension;
+        $filterFile_name = preg_replace('/[^A-Za-z0-9\-_.]/', '_', $file_name);
+
+        $file->move(public_path('uploads/Categories/'.$category->CategoryName),$filterFile_name);
+            
+        $request->merge(['ImageURL'=> $filterFile_name]);
+
+        $menuItem = $menuItem->update($request->all());
+        
+        }else{
+            $menuItem->update($request->all());
+        }
 
         return response()->json([
-            "message" => "đã sửa sản phẩm thành công",
-            "data" => $menuItem,
+            "message" => "đã update sản phẩm thành công",
+            "data"=> $menuItem,
         ]);
     }
 
@@ -75,6 +116,14 @@ class MenuItemController extends Controller
      */
     public function destroy(MenuItem $menuItem)
     {
+        $category = MenuCategory::where('CategoryID',$menuItem->CategoryID)->first();
+
+        $filePath = public_path('uploads\\Categories\\'.$category->CategoryName.'\\'.$menuItem->ImageURL);
+        if (file_exists($filePath)) {
+            unlink($filePath);
+            // Thông báo thành công
+        }
+
         $menuItem->delete();
 
         return response()->json([

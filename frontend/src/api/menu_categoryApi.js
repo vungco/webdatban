@@ -6,25 +6,21 @@ const tableApi = {
     return axiosClient.get('/menu_categorys', { params });
   },
 
-  // getById(id) {
-  //   return axiosClient.get(`/tables/${id}`);
-  // },
+  getById(id) {
+    return axiosClient.get(`/menu_categorys/${id}`);
+  },
 
-  // getByIdUser(id) {
-  //   return axiosClient.get(`/user/get_customer`);
-  // },
+  create(data) {
+    return axiosClient.post('/menu_categorys', data);
+  },
 
-  // create(data) {
-  //   return axiosClient.post('/tables', data);
-  // },
+  update(id, data) {
+    return axiosClient.put(`/menu_categorys/${id}`, data);
+  },
 
-  // update(id, data) {
-  //   return axiosClient.put(`/tables/${id}`, data);
-  // },
-
-  // delete(id) {
-  //   return axiosClient.delete(`/tables/${id}`);
-  // },
+  delete(id) {
+    return axiosClient.delete(`/menu_categorys/${id}`);
+  },
 };
 
 export default tableApi;

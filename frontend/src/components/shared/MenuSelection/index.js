@@ -70,6 +70,15 @@ const MenuSelection = ({ isVisible, onClose }) => {
         return menu_items.reduce((total, item) => total + (item.Price || 0), 0);
     };
 
+    const getImagePath = (categoryName, productImg) => {
+        try {
+          return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
+        } catch (error) {
+          console.error('Error loading image:', error);
+          return null; // Hoặc có thể trả về một hình ảnh mặc định
+        }
+    };
+
     useEffect(()=>{
         if(Select_menuItems){
             const sumPrice = Select_menuItems.reduce((total, item) => total + (item.Price || 0), 0);
@@ -123,7 +132,7 @@ const MenuSelection = ({ isVisible, onClose }) => {
                                         <div className="col-md-5 text-center pro-item p-1 position-relative" key={product.MenuItemID} style={{ background: '#908f8f', marginBottom: '24px', height: '290px' }}>
                                             <div className='pro-item_child' style={{ width: '100%', height: '100%', position: 'absolute', background: '#fff', top: '1%', padding: '8px' }}>
                                                 <img
-                                                    src={product.ImageURL}
+                                                    src={getImagePath(product.menu_category?.CategoryName,product.ImageURL)}
                                                     alt={product.Name}
                                                     className="w-100 mb-2"
                                                 />

@@ -9,6 +9,13 @@ const tableApi = {
   getById(id) {
     return axiosClient.get(`/tables/${id}`);
   },
+  setStatus(id) {
+    return axiosClient.get(`table/${id}/setStatus`);
+  },
+
+  resetStatus() {
+    return axiosClient.get(`table/resetStatus`);
+  },
 
   getByIdUser(id) {
     return axiosClient.get(`/user/get_customer`);

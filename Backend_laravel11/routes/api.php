@@ -41,6 +41,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('booking/{booking}/booking_tables', [TableBookingController::class, 'getTableOfBooking']);
     Route::get('booking/{booking}/orders', [TableBookingController::class, 'getOrderOfBooking']);
     Route::get('order/{order}/order_details', [OrderController::class, 'getOrderDetailOfOrder']);
+    Route::get('table/{table}/setStatus', [TableController::class, 'SetStatus']);
+    Route::get('table/resetStatus', [TableController::class, 'ResetStatus']);
 
     Route::apiResource('booking_tables',BookingTableController::class)->only('store','index');
 

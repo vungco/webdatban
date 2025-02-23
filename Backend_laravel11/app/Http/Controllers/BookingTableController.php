@@ -68,9 +68,9 @@ class BookingTableController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(BookingTable $bookingTable)
+    public function destroy($BookingID)
     {
-        $bookingTable->delete();
+        BookingTable::query()->delete(['BookingID' => $BookingID]);
 
         return response()->json([
             "message" => "đã xóa hàng trung gian thành công"

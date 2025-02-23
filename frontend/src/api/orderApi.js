@@ -11,6 +11,12 @@ const orderApi = {
   getAllOfBooking(id) {
     return axiosClient.get(`/booking/${id}/orders`);
   },
+  update(id, data) {
+    return axiosClient.put(`/orders/${id}`, data);
+  },
+  delete(id) {
+    return axiosClient.delete(`/orders/${id}`);
+  },
 };
 
 export default orderApi;

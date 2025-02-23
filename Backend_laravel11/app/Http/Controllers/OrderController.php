@@ -13,7 +13,12 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::with('customer')->get();
+        
+        return response()->json([
+            "message" => "đã hiển thị đơn hàng thành công",
+            "data" => $orders,
+        ]);
     }
 
     /**
@@ -56,7 +61,7 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function update(OrderRequest $request, Order $order)
     {
         $order->update($request->all());
 

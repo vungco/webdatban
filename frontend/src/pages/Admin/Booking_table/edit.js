@@ -10,11 +10,11 @@ const EditForm = ({ setisShowFormEdit,GetPromotions,data,id }) => {
     const [EndDate,setEndDate] = useState('');
 
     useEffect(()=>{
-        setTitle(data.Title);
-        setDescription(data.Description);
-        setDiscount(data.Discount);
-        setStartDate(data.StartDate);
-        setEndDate(data.EndDate);
+        setTitle(data.FullName);
+        setDescription(data.PhoneNumber);
+        setDiscount(data.Address);
+        setStartDate(data.UserID);
+        setEndDate(data.FullName);
     },[])
 
     const handleSubmit = (e) => {
@@ -41,7 +41,7 @@ const EditForm = ({ setisShowFormEdit,GetPromotions,data,id }) => {
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                <h4>{"Sửa dữ liệu"}</h4>
+                <h4>{"Thêm dữ liệu"}</h4>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
                         <label className="form-label">Tiêu đề: </label>
