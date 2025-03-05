@@ -43,7 +43,7 @@ class MenuItemController extends Controller
 
             $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
             $file_name = time() . '-' . $request->Name .'.'. $extension;
-            $filterFile_name = preg_replace('/[^A-Za-z0-9\-_.]/', '_', $file_name);
+            $filterFile_name = $category->CategoryName.'/'.$file_name;
 
             $file->move(public_path('uploads/Categories/'.$category->CategoryName),$filterFile_name);
             

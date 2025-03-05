@@ -12,10 +12,10 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        $feedbacks = Feedback::orderBy('created_at', 'desc')->get();
+        $feedbacks = Feedback::orderBy('CreateAt', 'desc')->with('user')->get();
         return response()->json([
             "message" => "hiển thị toàn bộ feedback của khách hàng thành công",
-            "data" => ""
+            "data" => $feedbacks
         ]);
     }
 

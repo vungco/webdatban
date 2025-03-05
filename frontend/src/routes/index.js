@@ -24,6 +24,9 @@ import Table_booking from "../pages/Admin/Table_booking";
 import Booking_table from "../pages/Admin/Booking_table";
 import OrderAdmin from "../pages/Admin/Order";
 import Booking_tableAdmin from "../pages/Admin/Booking_table";
+import Order_detail from "../pages/Admin/Order_detail";
+import Feedback from "../pages/Admin/Feedback";
+import FeedbackOFUser from "../pages/User/Feedback";
 
 const publicRoutes = [
     {
@@ -31,6 +34,9 @@ const publicRoutes = [
     },
     {
         path: '/Show_booking', component: Show_booking
+    },
+    {
+        path: '/Feedback', component: FeedbackOFUser
     },
     {
         path: '/Show_bookingTable/:BookingID', component: Show_bookingTable
@@ -93,7 +99,13 @@ const publicRoutes = [
         path: '/Admin/Order/:BookingID/:CustomerID', component:OrderAdmin , layout: Admin
     },
     {
+        path: '/Admin/Order_detail/:OrderID', component:Order_detail , layout: Admin
+    },
+    {
         path: '/Admin/Booking_table/:BookingID/:CustomerID', component: Booking_tableAdmin, layout: Admin
+    },
+    {
+        path: '/Admin/Feedback', component: Feedback, layout: Admin
     },
 ];
 

@@ -1,14 +1,41 @@
-import React from 'react'
+import React, { useEffect,useState } from 'react'
 import { Bar, Pie } from 'react-chartjs-2';
 import { Chart as ChartJS } from 'chart.js/auto';
+import statisticalApi from '../../../api/statisticalApi';
 
 function Home() {
+    const [SumOrder,setSumOrder] = useState();
+    const [CountTable,setCountTable] = useState();
+    const [labels,setlabels] = useState();
+    const [datasets,setdatasets] = useState();
+    
+    useEffect(()=>{
+        statisticalApi.getOrderandTable()
+        .then(response=>{
+            setSumOrder(response.data.Sum_TotalAmount);
+            setCountTable(response.data.Count_TableID);
+        })
+        .catch(error=>{
+            console.error('có lỗi trong quá trình lấy dl: '+error);
+        })
+
+        statisticalApi.getChartOfOrder()
+        .then(response=>{
+            setlabels(response.labels);
+            setdatasets(response.datasets[0].data);
+        })
+        .catch(error=>{
+            console.error('có lỗi trong quá trình lấy dl: '+error);
+        })
+    },[])
+
+
     const data = {
-        labels: ['Ngày 1', 'Ngày 2', 'Ngày 3', 'Ngày 4', 'Ngày 5', 'Ngày 6', 'Ngày 7'], // Tên các ngày
+        labels: labels, // Tên các ngày
         datasets: [
             {
                 label: 'Số lượng bàn đặt',
-                data: [12, 19, 3, 5, 10, 9, 3], // Số lượng bàn đặt trong từng ngày
+                data: datasets, // Số lượng bàn đặt trong từng ngày
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1,
@@ -47,13 +74,13 @@ function Home() {
                 <div className="col-md-4  p-2" style={{ height: '100px' }}>
                     <div style={{ boxShadow: '0 -4px 10px 4px rgba(0, 0, 0, 0.1)', width: '100%', height: '100%', textAlign: 'center' }}>
                         <h6 className="pt-3">Tổng doanh thu </h6>
-                        <p>1</p>
+                        <p>{SumOrder}</p>
                     </div>
                 </div>
                 <div className="col-md-4  p-2" style={{ height: '100px' }}>
                     <div style={{ boxShadow: '0 -4px 10px 4px rgba(0, 0, 0, 0.1)', width: '100%', height: '100%', textAlign: 'center' }}>
                         <h6 className="pt-3">Số bàn đã đặt </h6>
-                        <p>1</p>
+                        <p>{CountTable}</p>
                     </div>
 
                 </div>

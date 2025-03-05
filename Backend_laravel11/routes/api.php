@@ -11,6 +11,7 @@ use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\StatisticalController;
 use App\Http\Controllers\TableBookingController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
@@ -43,6 +44,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('order/{order}/order_details', [OrderController::class, 'getOrderDetailOfOrder']);
     Route::get('table/{table}/setStatus', [TableController::class, 'SetStatus']);
     Route::get('table/resetStatus', [TableController::class, 'ResetStatus']);
+    Route::get('order/{order}/updateTotalAmount', [OrderController::class, 'UpdateTotalAmount']);
+    Route::get('statistical/getOrderandTable', [StatisticalController::class, 'getStatistics']);
+    Route::get('statistical/getChartOfOrder', [StatisticalController::class, 'getRevenueStatistics']);
+
 
     Route::apiResource('booking_tables',BookingTableController::class)->only('store','index');
 

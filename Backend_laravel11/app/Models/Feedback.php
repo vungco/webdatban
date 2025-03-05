@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Feedback extends Model
 {
-
+    protected $table = 'feedbacks'; // Đặt tên bảng chính xác
     public $timestamps = false;
+
     protected $primaryKey = "FeedbackID";
 
     protected $fillable = [
@@ -18,6 +18,7 @@ class Feedback extends Model
     ];
 
     public function user(){
-        return $this->BelongsTo(User::class);
+        return $this->belongsTo(User::class,'UserID','id');
     }
+
 }

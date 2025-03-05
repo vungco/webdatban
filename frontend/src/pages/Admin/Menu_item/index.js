@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import menu_itemApi from '../../../api/menu_itemApi'
 import CreateForm from "./create";
 import EditForm from "./edit";
+import { apiUrl } from "../../../config";
+import {formatNumber} from "../../../components/utils/format_number";
+ 
+
 function Menu_item() {
     const [Menu_items, setMenu_items] = useState(null);
     const [isShowFormCreate, setisShowFormCreate] = useState(false);
@@ -37,9 +41,9 @@ function Menu_item() {
         }
     }
 
-    const getImagePath = (categoryName, productImg) => {
+    const getImagePath = (productImg) => {
         try {
-          return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
+          return `${apiUrl}/uploads/Categories/${productImg}`;
         } catch (error) {
           console.error('Error loading image:', error);
           return null; // Hoặc có thể trả về một hình ảnh mặc định
@@ -84,9 +88,9 @@ function Menu_item() {
                             <td>{menu_item.menu_category?.CategoryName}</td>
                             <td>{menu_item.Name}</td>
                             <td>{menu_item.Description}</td>
-                            <td>{menu_item.Price}</td>
+                            <td>{formatNumber(menu_item.Price)}</td>
                             <td>
-                                <img style={{width:'180px'}} src={getImagePath(menu_item.menu_category?.CategoryName,menu_item.ImageURL)} alt="Product Image"/>
+                                <img style={{width:'180px'}} src={getImagePath(menu_item.ImageURL)} alt="Product Image"/>
                             </td>
                             <td>{menu_item.Status}</td>
                             <td>

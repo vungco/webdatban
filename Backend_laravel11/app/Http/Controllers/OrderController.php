@@ -98,4 +98,23 @@ class OrderController extends Controller
             ], 404);
         }
     }
+    
+    public function UpdateTotalAmount(Order $order)
+    {
+        $order_details = $order->order_details()->get(); // Lấy danh sách các lượt đặt bàn
+
+        if ($order_details->isNotEmpty()) {
+            $totalPrice = $order_details->sum('Price');
+            $order->update(['TotalAmount'=>$totalPrice]);
+
+            return response()->json([
+                "message" => "Đã update totalAmount của đơn hàng thành công",
+                "data" => $order, // Trả về danh sách đặt bàn thay vì customer
+            ]);
+        } else {
+            return response()->json([
+                "message" => "ko có đơn hang chi tiết nào cả",
+            ], 404);
+        }
+    }
 }

@@ -33,6 +33,7 @@ function Sidebar() {
                 <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Table'><i className="fas fa-table me-2"></i>Bàn</Link> </li>
                 <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Promotion'><i className="fas fa-tags me-2"></i> Khuyến mại</Link> </li>
                 <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Table_booking'><i className="fas fa-clipboard-list me-2"></i> Lượt đặt bàn </Link> </li>
+                <li className='slide' style={{ padding: '8px 20px' }}><Link to='/Admin/Feedback'><i className="fas fa-clipboard-list me-2"></i> Lượt đánh giá </Link> </li>
 
 
 

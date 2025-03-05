@@ -4,7 +4,7 @@ import { formatNumber } from '../../../components/utils/format_number';
 
 const VoucherShop =({setPromotion , onClose,Promotion}) =>{
     
-    const [Promotions, setPromotions] = useState(null);
+    const [Promotions, setPromotions] = useState([]);
     const [VoucherSelected, setVoucherSelected] = useState([]);
 
     function handleSaveVoucher(){
@@ -47,7 +47,7 @@ const VoucherShop =({setPromotion , onClose,Promotion}) =>{
         <div className="modal-overlay">
             <div className="modal-content">
                 <h4 style={{color:'black'}}> Chọn voucher</h4>
-                            {Promotions?.map(promiton=>(
+                            {Promotions.length>0 ? Promotions.map(promiton=>(
                                 <div className='row' 
                             style={{ border: '1px solid', alignItems: 'center', marginBottom: '12px',cursor:'pointer' }} 
                             // key={}
@@ -67,7 +67,11 @@ const VoucherShop =({setPromotion , onClose,Promotion}) =>{
                                     />
                                 </div>
                             </div>
-                            ))}
+                            ))
+                        :
+                            <p style={{color:'black'}}>Không có voucher nào cả</p>
+                            }
+                            
                 <div style={{position:'absolute',bottom:'4%',right:'4%'}}>
                     <button type="submit" className="btn btn-primary" 
                     onClick={() => handleSaveVoucher()}

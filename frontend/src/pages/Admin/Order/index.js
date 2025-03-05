@@ -3,8 +3,11 @@ import orderApi from '../../../api/orderApi'
 import CreateForm from "./create";
 import EditForm from "./edit";
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { formatNumber } from "../../../components/utils/format_number";
 
 function Order() {
+    const navigate = useNavigate();
     const {BookingID,CustomerID} = useParams();
     
     const [Orders, setOrders] = useState(null);
@@ -38,6 +41,10 @@ function Order() {
             })
         }
     }
+
+    const handleToOrderDetail = (OrderID) => {
+        navigate(`/Admin/Order_detail/${OrderID}`); // Chuyển đến trang Pay
+    };
     
     return (
         
@@ -67,6 +74,7 @@ function Order() {
                         <th>Tổng tiền:</th>                        
             
                         <th>Hành động</th>
+                        <th>Đơn hàng chi tiết</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,7 +84,7 @@ function Order() {
                         >
                             <td>{order.OrderDate}</td>
                             <td>{order.promotion?.Discount==null?'0':order.promotion.Discount}</td>
-                            <td>{order.TotalAmount}</td>
+                            <td>{formatNumber(order.TotalAmount)}</td>
                             <td>
                                 <button
                                     className="btn btn-warning btn-sm me-2"
@@ -106,6 +114,8 @@ function Order() {
                                     <i className="fa fa-trash"></i> Xóa
                                 </button>
                             </td>
+                            <td><i className="fa-solid fa-eye" onClick={()=>handleToOrderDetail(order.OrderID)} /></td>
+
                         </tr>
                     ))}
                 </tbody>

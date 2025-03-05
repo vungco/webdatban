@@ -3,7 +3,7 @@ import axios from 'axios';
 import { apiUrl } from '../config';
 
 const axiosClient = axios.create({
-  baseURL: apiUrl,  // Sử dụng biến môi trường cho dễ quản lý
+  baseURL: apiUrl+'/api',  // Sử dụng biến môi trường cho dễ quản lý
   headers: {
     'Content-Type': 'application/json',
   },

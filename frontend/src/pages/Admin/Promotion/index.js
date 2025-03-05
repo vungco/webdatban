@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import promotionApi from '../../../api/promotionApi'
 import CreateForm from "./create";
 import EditForm from "./edit";
+import { formatNumber } from "../../../components/utils/format_number";
 
 function Promotion() {
     const [Promotions, setPromotions] = useState(null);
@@ -75,7 +76,7 @@ function Promotion() {
                             <td>
                                 {promotion.Description}
                             </td>
-                            <td>{promotion.Discount}</td>
+                            <td>{formatNumber(promotion.Discount)}</td>
                             <td>{promotion.StartDate}</td>
                             <td>{promotion.EndDate}</td>
                             <td>

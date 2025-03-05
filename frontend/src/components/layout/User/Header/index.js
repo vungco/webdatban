@@ -51,7 +51,7 @@ function Header() {
                                         <li><Link to='/'>Thực đơn</Link></li>
                                         <li><Link to='/'>Giới thiệu</Link></li>
                                         <li><Link to='/'>Tin tức</Link></li>
-                                        <li><Link to='/'>Liên hệ</Link></li>
+                                        <li><Link to='/Feedback'>Feedback</Link></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -86,9 +86,7 @@ function Header() {
                                                 <button onClick={handleLogout}>Đăng xuất</button>
                                         </div>)}
                                     </div>
-                                    <div className='col-md-2'>
-                                        <Link to='/Cart'><i className="fas fa-shopping-cart"></i></Link>
-                                    </div>
+                                    
                                     <div className='col-md-6'>
                                         <Link to='/Bookings'><button className='bt-booking w-100'>Đặt bàn</button> </Link>
                                     </div>

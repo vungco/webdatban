@@ -5,9 +5,11 @@ import VoucherShop from "./show_voucher";
 import bankingApi from "../../../api/bankingApi";
 import table_bookingApi from "../../../api/table_bookingApi";
 import booking_tableApi from "../../../api/booking_tableApi";
+import tableApi from "../../../api/tableApi";
 import orderApi from "../../../api/orderApi";
 import order_detailApi from "../../../api/order_detailApi";
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from "../../../config";
 
 
 function Bill() {
@@ -20,6 +22,32 @@ function Bill() {
     const [show_formVoucher, setshow_formVoucher] = useState(false);
     const [Promotion, setPromotion] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const parTables = JSON.parse(sessionStorage.getItem('tables'));
+        const parTableBookings = JSON.parse(sessionStorage.getItem('table_bookings'));
+        const parMenuItems = JSON.parse(sessionStorage.getItem('menu_items'));
+        const parTotal_price = JSON.parse(sessionStorage.getItem('total_price'));
+
+        setmenu_items(parMenuItems);
+        settable_bookings(parTableBookings);
+        settables(parTables);
+        settotal_price(parTotal_price);
+    }, []);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeLeft((prev) => {
+                if (prev <= 1) {
+                    clearInterval(timer); // Dừng đếm ngược khi hết giờ
+                    return 0;
+                }
+                return prev - 1; // Giảm 1 giây mỗi lần
+            });
+        }, 1000);
+
+        return () => clearInterval(timer); // Dọn sạch bộ đếm nếu component unmount
+    }, []);
 
     function HandleCheckBanking(){
         alert('vui lòng đợi hệ thống đang kiểm tra');
@@ -94,52 +122,38 @@ function Bill() {
             }
             order_detailApi.create(data)
             .then(response=>{
-                //tiến hành đặt bàn
-                
             })
             .catch(error=>{
                 console.error('có lỗi trong quá trình tạo đơn hàng chi tiết: ',error)
             })
         })
-        HandleClean();
+        setStatusOfTable();                
+
+    }
+
+    function setStatusOfTable(){
+        tables.forEach(table=>{
+            
+            tableApi.setStatus(table.TableID)
+            .then(response=>{
+            })
+            .catch(error=>{
+                console.error('có lỗi trong quá trình tạo đơn hàng chi tiết: ',error)
+            })
+        })
+        HandleClean();                
     }
 
     function HandleClean(){
-        setTimeout(()=>{
             sessionStorage.clear();
             navigate('/Thanks')
-        },3000)
     }
 
     const onCloseFormVoucher = () => {
         setshow_formVoucher(false);
     }
 
-    useEffect(() => {
-        const parTables = JSON.parse(sessionStorage.getItem('tables'));
-        const parTableBookings = JSON.parse(sessionStorage.getItem('table_bookings'));
-        const parMenuItems = JSON.parse(sessionStorage.getItem('menu_items'));
-        const parTotal_price = JSON.parse(sessionStorage.getItem('total_price'));
-
-        setmenu_items(parMenuItems);
-        settable_bookings(parTableBookings);
-        settables(parTables);
-        settotal_price(parTotal_price);
-    }, []);
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer); // Dừng đếm ngược khi hết giờ
-                    return 0;
-                }
-                return prev - 1; // Giảm 1 giây mỗi lần
-            });
-        }, 1000);
-
-        return () => clearInterval(timer); // Dọn sạch bộ đếm nếu component unmount
-    }, []);
+    
     const formatTime = (seconds) => {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
@@ -148,6 +162,16 @@ function Bill() {
             .toString()
             .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
     };
+
+    const getImagePath = (productImg) => {
+            try {
+              return `${apiUrl}/uploads/Categories/${productImg}`;
+            } catch (error) {
+              console.error('Error loading image:', error);
+              return null; // Hoặc có thể trả về một hình ảnh mặc định
+            }
+          };
+
     return (
         <div className='container-fluid w-100' style={{ background: '#10302c', padding: '80px 0 0 0' }}>
             <div className='container-fluid p-0' style={{ height: '50px', background: '#000' }}>
@@ -182,20 +206,22 @@ function Bill() {
                             <div className='col-md-8'>
                                 <div style={{ border: '1px solid #fff' }}>
                                         <div className='row p-2'>
-                                        <div className='col-md-9'>Sản phẩm</div>
+                                        <div className='col-md-6'>Sản phẩm</div>
                                         <div className='col-md-3'>Đơn giá</div>
+                                        <div className='col-md-3'>Số lượng</div>
                                     </div>
                                     {menu_items?.map((menu_item)=>(
                                     <>
                                     <div className='row p-2 w-100 m-0 align-items-center' style={{ borderTop: '1px solid #fff' }} >
-                                        <div className='col-md-9 d-flex align-items-center'>
-                                            <img style={{ width: '108px' }} src={menu_item.ImageURL} />
+                                        <div className='col-md-6 d-flex align-items-center'>
+                                            <img style={{ width: '108px' }} src={getImagePath(menu_item.ImageURL)} />
                                             <div style={{ marginLeft: '8px' }}>
                                                 <p>{menu_item.Name}</p>
                                                 {/* <button style={{ border: 'none', color: '#c8760b', background: 'none' }}>Xóa</button> */}
                                             </div>
                                         </div>
                                         <div className='col-md-3' style={{ color: '#c8760b' }}>{formatNumber(menu_item.Price)}</div>
+                                        <div className='col-md-3' style={{ color: '#c8760b' }}>{(menu_item.Quantity)}</div>
                                     </div>
                                     </>
                                     ))}

@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import Notification from '../Notification';
-const Quikly = ({ onClose }) => {
+import { formatNumber } from '../../utils/format_number';
+
+const Quikly = ({ onClose,ImageURL,menu_item }) => {
     const [isVisible, setIsVisible] = useState(true);
     const [quantity, setQuantity] = useState(1);
     const [notification, setNotification] = useState({
@@ -34,12 +36,12 @@ const Quikly = ({ onClose }) => {
                 </div>
                 <div className='row p-2'>
                     <div className='col-md-6'>
-                        <img src='https://bizweb.dktcdn.net/thumb/large/100/469/097/products/1cdb6151948324e7bb3b83f1b9f4cb.jpg?v=1667882448253' style={{ width: '90%' }} />
+                        <img src={ImageURL} style={{ width: '90%' }} />
 
                     </div>
                     <div className='col-md-6 detail'>
-                        <p style={{ fontSize: '18px' }}>Gỏi cuốn</p>
-                        <p style={{ color: 'red' }}>25.000đ</p>
+                        <p style={{ fontSize: '18px' }}>{menu_item.Name}</p>
+                        <p style={{ color: 'red' }}>{formatNumber(menu_item.Price)}</p>
                         <div className='d-flex align-items-center ju' style={{ borderBottom: '1px solid #969494', borderTop: '1px solid #969494', height: '40px' }}>
                             <p className='m-0'>Tại Dola Restaurant : </p>
                             <Link to='/' style={{ color: '#bd8133' }}>Liên hệ</Link>
@@ -59,11 +61,7 @@ const Quikly = ({ onClose }) => {
 
                             }} className='border-0' style={{ width: '50px' }}>+</button>
                         </div>
-                        <button onClick={(e) => {
-                            e.stopPropagation();
-                            handleAddToCart();
-                        }} style={{ width: '150px', backgroundColor: '#bd8133', height: '40px', color: '#fff', border: 'none', borderRadius: '20px', marginTop: '16px' }}>Thêm vào giỏ hàng</button>
-                        <Notification message={notification.message} type={notification.type} />
+                        
                     </div>
                 </div>
 

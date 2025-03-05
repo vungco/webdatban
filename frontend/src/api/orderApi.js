@@ -14,6 +14,9 @@ const orderApi = {
   update(id, data) {
     return axiosClient.put(`/orders/${id}`, data);
   },
+  updateTotalAmount(id) {
+    return axiosClient.get(`/order/${id}/updateTotalAmount`);
+  },
   delete(id) {
     return axiosClient.delete(`/orders/${id}`);
   },

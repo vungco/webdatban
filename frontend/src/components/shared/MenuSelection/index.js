@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import menu_itemApi from '../../../api/menu_itemApi';
 import menu_categoryApi from '../../../api/menu_categoryApi';
+import { apiUrl } from '../../../config';
 
 const MenuSelection = ({ isVisible, onClose }) => {
     const navigate = useNavigate();
@@ -37,13 +38,6 @@ const MenuSelection = ({ isVisible, onClose }) => {
     };
 
     useEffect(()=>{
-        if(Menu_items){
-            const filteredItems = Menu_items.filter((item) => item.CategoryID === activeCategory);
-            setMenu_itemsOfactiveCategory(filteredItems);
-        }
-    },[activeCategory]);
-
-    useEffect(()=>{
         menu_itemApi.getAll()
             .then(response=>{
                 setMenu_items(response.data)
@@ -60,6 +54,26 @@ const MenuSelection = ({ isVisible, onClose }) => {
             )
     },[]);
 
+    useEffect(() => {
+        if (Menu_items !== null) {
+            if(!Menu_items[0]?.Quantity){
+                const updatedItems = Menu_items.map(menu_item => ({
+                    ...menu_item,
+                    Quantity: 1, // Thêm cột Quantity mặc định là 1
+                }));
+                setMenu_items(updatedItems);
+                GetMenuItemOfCategory(updatedItems);
+
+            }
+        GetMenuItemOfCategory(Menu_items);
+        }
+    }, [Menu_items]);
+
+    function GetMenuItemOfCategory(data){
+        const filteredItems = data.filter((item) => item.CategoryID === activeCategory);
+        setMenu_itemsOfactiveCategory(filteredItems);
+    }
+
     const handleToBill = () => {
         sessionStorage.setItem('menu_items',JSON.stringify(Select_menuItems));
         sessionStorage.setItem('total_price',JSON.stringify(TotalPrice));
@@ -70,14 +84,25 @@ const MenuSelection = ({ isVisible, onClose }) => {
         return menu_items.reduce((total, item) => total + (item.Price || 0), 0);
     };
 
-    const getImagePath = (categoryName, productImg) => {
-        try {
-          return `http://localhost:8000/uploads/Categories/${categoryName}/${productImg}`;
-        } catch (error) {
-          console.error('Error loading image:', error);
-          return null; // Hoặc có thể trả về một hình ảnh mặc định
-        }
-    };
+    const getImagePath = (productImg) => {
+            try {
+              return `${apiUrl}/uploads/Categories/${productImg}`;
+            } catch (error) {
+              console.error('Error loading image:', error);
+              return null; // Hoặc có thể trả về một hình ảnh mặc định
+            }
+          };
+
+        const updateQuantity = (id, amount) => {
+          setMenu_items(prevItems =>
+            prevItems.map(item =>
+                item.MenuItemID == id ? 
+                { ...item, Quantity : item.Quantity+amount } // Không cho xuống dưới 1
+                : item
+            )
+          );
+        };
+        
 
     useEffect(()=>{
         if(Select_menuItems){
@@ -132,13 +157,29 @@ const MenuSelection = ({ isVisible, onClose }) => {
                                         <div className="col-md-5 text-center pro-item p-1 position-relative" key={product.MenuItemID} style={{ background: '#908f8f', marginBottom: '24px', height: '290px' }}>
                                             <div className='pro-item_child' style={{ width: '100%', height: '100%', position: 'absolute', background: '#fff', top: '1%', padding: '8px' }}>
                                                 <img
-                                                    src={getImagePath(product.menu_category?.CategoryName,product.ImageURL)}
+                                                    src={getImagePath(product.ImageURL)}
                                                     alt={product.Name}
                                                     className="w-100 mb-2"
                                                 />
                                                 <h5>{product.Name}</h5>
                                                 <p className="text-danger">{formatNumber(product.Price)}</p>
+                                                <div className='d-flex' style={{ width: '100%', height: '30px' }}>
+                                                <button
+                                                    className='border-0' style={{ width: '50px', backgroundColor: '#d69c52', marginRight: '8px', borderRadius: '5px',height:'100%'}}
+                                                    onClick={() => updateQuantity(product.MenuItemID, -1)}
+                                                >-</button>
+                                                <input className='w-100 border-0' type="number"
+                                                    style={{ borderRadius: '5px', textAlign: "center"
+                                                    }}
+                                                    value={product.Quantity}
+                                                    readOnly></input>
+                                                <button
+                                                    className='border-0' style={{ width: '50px', backgroundColor: '#d69c52', marginLeft: '8px', borderRadius: '5px',height:'100%' }}
+                                                    onClick={() => updateQuantity(product.MenuItemID, 1)}
+                                                >+</button>
+                                                </div>
                                             </div>
+                                            
                                             {product.Status ?
                                             <button 
                                             style={{ position: 'absolute', bottom: '-10%', left: '25%', border: 'none', 
@@ -159,11 +200,16 @@ const MenuSelection = ({ isVisible, onClose }) => {
                                 <div style={{height:'90%',overflowY: 'auto'}}>
                                     <h5>Các món đã chọn</h5>
                                     {Select_menuItems?.map((select_menuItem)=>(
-                                    <div className='d-flex align-items-center justify-content-between mt-3 pb-3' style={{ borderBottom: '1px solid #fff' }}>
+                                    <div className='d-flex align-items-center justify-content-between mt-3 pb-3' style={{ borderBottom: '1px solid #fff',height:'100px' }}>
                                         <div className='d-flex align-items-center position-relative mt-2'>
-                                            <img style={{ width: '50px', height: '50px', borderRadius: '5px' }} src='https://bizweb.dktcdn.net/thumb/thumb/100/469/097/products/untitled1bb4fdbb3bd7845448a799-a1c5a559-3505-435f-9278-d7ba29e9c529.jpg?v=1667882632337' />
-                                            <p style={{ marginLeft: '4px', fontSize: '12px' }}>{select_menuItem.Name}</p>
+                                            <img style={{ width: '50px', height: '50px', borderRadius: '5px' }} src={getImagePath(select_menuItem.ImageURL)} />
+                                            <div >
+                                                <p style={{ marginLeft: '4px', fontSize: '12px' }}>{select_menuItem.Name}</p>
+                                                <p style={{ marginLeft: '4px', fontSize: '12px' }}>Số lượng: {select_menuItem.Quantity}</p>
+                                            </div>
+                                            
                                         </div>
+                                        
                                         <div className='d-flex align-items-center justify-content-center flex-column'>
                                             <p style={{ color: '#d69c52', fontSize: '12px', margin: '0' }}>{formatNumber(select_menuItem.Price)}</p>
                                             <button className='d-flex align-items-center justify-content-center' style={{ color: '#fff', fontSize: '12px', background: 'red', height: '20px', border: 'none' }}
