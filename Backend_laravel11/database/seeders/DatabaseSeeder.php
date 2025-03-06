@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\MenuCategory;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -64,5 +65,17 @@ class DatabaseSeeder extends Seeder
         }
 
         Table::insert($tables);
+
+
+        $categories = [
+            ['CategoryName' => 'Hải sản'],
+            ['CategoryName' => 'Tráng miệng'],
+            ['CategoryName' => 'Món chính'],
+            ['CategoryName' => 'Đồ uống'],
+        ];
+
+        foreach ($categories as $category) {
+            MenuCategory::create($category);
+        }
     }
 }
