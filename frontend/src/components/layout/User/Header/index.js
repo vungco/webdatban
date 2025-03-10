@@ -33,9 +33,18 @@ function Header() {
     const handleClose = () => {
         setShowLogin(false);
     };
+    const handleScroll = (id) => {
+        const section = document.getElementById(id);
+        if (section) {
+            section.scrollIntoView({
+                behavior: 'smooth', // trượt mượt mà
+                block: 'start',     // căn lề phía trên
+            });
+        }
+    };
     return (
         <>
-        {/* <Login isVisible={showLogin} onClose={handleClose} /> */}
+            {/* <Login isVisible={showLogin} onClose={handleClose} /> */}
             <Zalo></Zalo>
             <div className='p-0' id='header'>
                 <div className='container-fluid header p-0'>
@@ -48,10 +57,10 @@ function Header() {
                                 <nav className='header-nav'>
                                     <ul className='item_big m-0 d-flex align-items-center justify-content-between'>
                                         <li><Link to='/'>Trang chủ</Link></li>
-                                        <li><Link to='/'>Thực đơn</Link></li>
-                                        <li><Link to='/'>Giới thiệu</Link></li>
-                                        <li><Link to='/'>Tin tức</Link></li>
-                                        <li><Link to='/Feedback'>Feedback</Link></li>
+                                        <li onClick={() => handleScroll('thucdon')}><Link to='/'>Thực đơn</Link></li>
+                                        <li onClick={() => handleScroll('gioithieu')}><Link to='/'>Giới thiệu</Link></li>
+                                        <li onClick={() => handleScroll('tintuc')}><Link to='/'>Tin tức</Link></li>
+                                        <li><Link to='/Feedback'>Phản hồi</Link></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -75,18 +84,18 @@ function Header() {
                                             <div className='d-flex flex-column' style={{ color: '#bd8133' }}>
                                                 <p className='m-0'>Xin chào Lâm!</p>
                                                 <Link to='/Show_booking'
-                                                onClick={()=>setIsOpen(false)}
+                                                    onClick={() => setIsOpen(false)}
                                                 >
                                                     Xem lượt đặt</Link>
                                                 <Link to='/PersonalIn4'
-                                                onClick={()=>setIsOpen(false)}
+                                                    onClick={() => setIsOpen(false)}
                                                 >
                                                     Thông tin cá nhân</Link>
                                             </div>
-                                                <button onClick={handleLogout}>Đăng xuất</button>
+                                            <button onClick={handleLogout}>Đăng xuất</button>
                                         </div>)}
                                     </div>
-                                    
+
                                     <div className='col-md-6'>
                                         <Link to='/Bookings'><button className='bt-booking w-100'>Đặt bàn</button> </Link>
                                     </div>

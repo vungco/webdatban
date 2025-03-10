@@ -16,7 +16,7 @@ function Home() {
                     <Link to='/Bookings'><button className='bt-booking' style={{ width: '180px' }}>Đặt bàn ngay</button> </Link>
                 </div>
             </div>
-            <div className='container-fluid pt-5 pb-5' style={{ height: '500px', background: '#143b36' }}>
+            <div className='container-fluid pt-5 pb-5' id='gioithieu' style={{ height: '500px', background: '#143b36' }}>
                 <div className='container'>
                     <div className='row'>
                         <div className='col-md-6'>
@@ -75,7 +75,7 @@ function Home() {
                 </div>
             </div>
             {/*  */}
-            <div className='container-fluid' style={{ background: '#143b36' }}>
+            <div className='container-fluid' id='thucdon' style={{ background: '#143b36' }}>
                 <div className='container pb-5'>
                     <Title
                         title='Thực đơn của chúng tôi'></Title>
@@ -157,7 +157,7 @@ function Home() {
 
             </div>
             {/* tin tức */}
-            <div className='container-fluid pt-4' style={{ background: '#143b36' }}>
+            <div className='container-fluid pt-4' id='tintuc' style={{ background: '#143b36' }}>
                 <div className='container pb-5'>
                     <Title
                         title='Tin tức'>
