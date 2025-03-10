@@ -67,7 +67,7 @@ const MenuSelection = ({ isVisible, onClose }) => {
             }
         GetMenuItemOfCategory(Menu_items);
         }
-    }, [Menu_items]);
+    }, [activeCategory]);
 
     function GetMenuItemOfCategory(data){
         const filteredItems = data.filter((item) => item.CategoryID === activeCategory);
