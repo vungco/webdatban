@@ -56,16 +56,12 @@ const MenuSelection = ({ isVisible, onClose }) => {
 
     useEffect(() => {
         if (Menu_items !== null) {
-            if (!Menu_items[0]?.Quantity) {
                 const updatedItems = Menu_items.map(menu_item => ({
                     ...menu_item,
                     Quantity: 1, // Thêm cột Quantity mặc định là 1
                 }));
                 setMenu_items(updatedItems);
-                GetMenuItemOfCategory(updatedItems);
-
-            }
-            GetMenuItemOfCategory(Menu_items);
+                GetMenuItemOfCategory(updatedItems);            
         }
     }, [activeCategory]);
 
@@ -94,19 +90,22 @@ const MenuSelection = ({ isVisible, onClose }) => {
     };
 
     const updateQuantity = (id, amount) => {
-        setMenu_items(prevItems =>
-            prevItems.map(item =>
-                item.MenuItemID == id ?
-                    { ...item, Quantity: item.Quantity + amount } // Không cho xuống dưới 1
-                    : item
-            )
-        );
+        let isSelect = Select_menuItems.some(t => t.MenuItemID === id)
+        if(!isSelect){
+            setMenu_itemsOfactiveCategory(prevItems =>
+                prevItems.map(item =>
+                    item.MenuItemID == id ?
+                        { ...item, Quantity: item.Quantity + amount } // Không cho xuống dưới 1
+                        : item
+                )
+            );
+        }
     };
 
 
     useEffect(() => {
         if (Select_menuItems) {
-            const sumPrice = Select_menuItems.reduce((total, item) => total + (item.Price || 0), 0);
+            const sumPrice = Select_menuItems.reduce((total, item) => total + (item.Price*item.Quantity || 0), 0);
             setTotalPrice(sumPrice);
         }
     }, [Select_menuItems]);

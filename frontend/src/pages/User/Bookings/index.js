@@ -4,8 +4,12 @@ import MenuSelection from '../../../components/shared/MenuSelection'
 import BookingTable from '../../../components/shared/BookingTable'
 import customerApi from '../../../api/customerApi'
 import authUser from '../../../api/authUser'
+import { useNavigate } from 'react-router-dom';
+
 
 function Bookings() {
+    const navigate = useNavigate();
+    
     const [showMenuModal, setShowMenuModal] = useState(false);
     const [showBookingTable, setShowBookingTable] = useState(false);
     const [Customer, setCustomer] = useState(null);
@@ -44,11 +48,17 @@ function Bookings() {
     },[])
 
     useEffect(()=>{
-        customerApi.getByIdUser(User_id)
+        if(User_id!==null){
+            customerApi.getByIdUser(User_id)
             .then(response=>{
                 setCustomer(response.data)
             })
-            .catch(error=>console.error('có lỗi: '+error))
+            .catch(error=>{
+                console.error('có lỗi trong quá trình lấy khách hàng: '+error)
+                alert('vui lòng nhập thông tin của quý khách trước!!');
+                navigate('/PersonalIn4')
+            })
+        }
     },[User_id])
     
 

@@ -71,24 +71,18 @@ function Home() {
                 <i style={{ color: '#62677399' }}>Welcome!</i>
             </div>
             <div className="row  mt-2 p-2">
-                <div className="col-md-4  p-2" style={{ height: '100px' }}>
+                <div className="col-md-6  p-2" style={{ height: '100px' }}>
                     <div style={{ boxShadow: '0 -4px 10px 4px rgba(0, 0, 0, 0.1)', width: '100%', height: '100%', textAlign: 'center' }}>
                         <h6 className="pt-3">Tổng doanh thu </h6>
                         <p>{SumOrder}</p>
                     </div>
                 </div>
-                <div className="col-md-4  p-2" style={{ height: '100px' }}>
+                <div className="col-md-6  p-2" style={{ height: '100px' }}>
                     <div style={{ boxShadow: '0 -4px 10px 4px rgba(0, 0, 0, 0.1)', width: '100%', height: '100%', textAlign: 'center' }}>
                         <h6 className="pt-3">Số bàn đã đặt </h6>
                         <p>{CountTable}</p>
                     </div>
 
-                </div>
-                <div className="col-md-4  p-2" style={{ height: '100px' }}>
-                    <div style={{ boxShadow: '0 -4px 10px 4px rgba(0, 0, 0, 0.1)', width: '100%', height: '100%', textAlign: 'center' }}>
-                        <h6 className="pt-3">Số ....</h6>
-                        <p>1</p>
-                    </div>
                 </div>
 
             </div>
