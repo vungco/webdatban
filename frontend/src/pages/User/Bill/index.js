@@ -98,7 +98,7 @@ function Bill() {
         const order = {
             BookingID : BookingID,
             CustomerID : table_bookings.CustomerID,
-            PromotionID: Promotion==null?Promotion:'',
+            PromotionID: Promotion!==null?Promotion.PromotionID:null,
             OrderDate: timeString,
             TotalAmount: total_price,
         }

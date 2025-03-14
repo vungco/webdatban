@@ -95,7 +95,7 @@ const MenuSelection = ({ isVisible, onClose }) => {
             setMenu_itemsOfactiveCategory(prevItems =>
                 prevItems.map(item =>
                     item.MenuItemID == id ?
-                        { ...item, Quantity: item.Quantity + amount } // Không cho xuống dưới 1
+                        { ...item, Quantity: Math.max(1, item.Quantity + amount) } // Không cho xuống dưới 1
                         : item
                 )
             );

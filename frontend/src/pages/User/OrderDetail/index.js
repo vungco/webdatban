@@ -2,6 +2,7 @@ import order_detailApi from "../../../api/order_detailApi";
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from "../../../config";
 
 function OrderDetail(){
     const [order_details,setorder_details] = useState(null);
@@ -16,6 +17,15 @@ function OrderDetail(){
                 console.error('có lỗi trong quá trình lấy dl: '+error)
             })
     },[])
+
+    const getImagePath = (productImg) => {
+                try {
+                  return `${apiUrl}/uploads/Categories/${productImg}`;
+                } catch (error) {
+                  console.error('Error loading image:', error);
+                  return null; // Hoặc có thể trả về một hình ảnh mặc định
+                }
+              };
 
     return (
         <div className='container-fluid w-100' style={{ background: '#10302c', padding: '80px 0 0 0' }}>
@@ -38,15 +48,15 @@ function OrderDetail(){
                             </tr>
                         </thead>
                         <tbody>
-                            {order_details?.map(menu_item=>(
+                            {order_details?.map(order_detail=>(
                                 <tr style={{ background: '#135b50', color: 'white' }}>
 
                                 <td>
-                                    <img style={{ width: '108px' }} src={menu_item.menu_item.ImageURL} />
+                                    <img style={{ width: '108px' }} src={getImagePath(order_detail.menu_item.ImageURL)} />
                                 </td>
-                                <td>{menu_item.menu_item.Name}</td>
-                                <td>{menu_item.Price}</td>
-                                <td>{menu_item.Quantity}</td>
+                                <td>{order_detail.menu_item.Name}</td>
+                                <td>{order_detail.Price}</td>
+                                <td>{order_detail.Quantity}</td>
                                 </tr>
                             ))}
                             
